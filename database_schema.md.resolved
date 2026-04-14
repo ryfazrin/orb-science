@@ -1,0 +1,109 @@
+# Analisis Skema Database Platform E-Learning
+
+Berdasarkan analisis dari komponen UI (seperti `CourseDetail`, `Dashboard`, dan `Profile`), platform ini membutuhkan database relasional untuk mendukung fitur-fiturnya. Berikut adalah usulan struktur database (Entity Relationship) utama yang diperlukan.
+
+## Diagram Relasi Entitas (ERD)
+
+```mermaid
+erDiagram
+    USERS ||--o{ ENROLLMENTS : "has"
+    USERS ||--o{ CERTIFICATES : "earns"
+    USERS ||--o{ REVIEWS : "writes"
+    
+    COURSES ||--o{ MODULES : "contains"
+    COURSES ||--o{ REVIEWS : "receives"
+    COURSES ||--o{ ENROLLMENTS : "enrolled in"
+    
+    MODULES ||--o{ LESSONS : "contains"
+    
+    INSTRUCTORS ||--o{ COURSES : "teaches"
+    USERS ||--|| INSTRUCTORS : "is a"
+```
+
+## Tabel Utama & Struktur Data
+
+### 1. `users` (Pengguna & Profil)
+Menyimpan data pengguna, baik siswa maupun instruktur.
+* `id` (Primary Key, UUID/Int)
+* `full_name` (String) - *Contoh: Aditi Sharma*
+* `email` (String, Unique)
+* `password_hash` (String)
+* `bio` (Text) - *Contoh: Aspiring Computer Scientist...*
+* `avatar_url` (String)
+* `role` (Enum: `student`, `instructor`, `admin`)
+* `created_at` (Timestamp)
+
+### 2. `instructors` (Detail Instruktur)
+(Opsional, bisa digabung ke tabel `users` jika sederhana, namun direkomendasikan dipisah jika ada data khusus spesifik instruktur).
+* `id` (Primary Key)
+* `user_id` (Foreign Key -> `users.id`)
+* `job_title` (String) - *Contoh: Senior Developer @ TechCo*
+* `total_students` (Int) - *Untuk caching statistik (opsional)*
+
+### 3. `courses` (Data Kursus/Katalog)
+Menyimpan informasi inti dari sebuah kursus.
+* `id` (Primary Key, UUID/Int)
+* `instructor_id` (Foreign Key -> `instructors.id`)
+* `title` (String) - *Contoh: Mastering Python for Beginners*
+* `description` (Text)
+* `price` (Decimal) - *Contoh: 499000*
+* `thumbnail_url` (String)
+* `difficulty` (String) - *Contoh: Absolute Beginner*
+* `language` (String) - *Contoh: Bahasa Indonesia*
+* `duration_hours` (Float) - *Contoh: 12.5*
+* `is_bestseller` (Boolean)
+* `certificate_included` (Boolean)
+* `last_updated` (Date)
+* `created_at` (Timestamp)
+
+### 4. `modules` (Silabus/Bab Kursus)
+Membagi kursus menjadi beberapa bagian/bab.
+* `id` (Primary Key)
+* `course_id` (Foreign Key -> `courses.id`)
+* `title` (String) - *Contoh: Foundations of Python*
+* `order` (Int) - *Urutan bab (1, 2, 3...)*
+
+### 5. `lessons` (Materi/Video Pelajaran)
+Detail pelajaran di dalam sebuah modul.
+* `id` (Primary Key)
+* `module_id` (Foreign Key -> `modules.id`)
+* `title` (String) - *Contoh: Variables and Data Types*
+* `type` (Enum: `video`, `quiz`, `article`)
+* `duration_minutes` (Int)
+* `video_url` (String/Nullable)
+* `is_free_preview` (Boolean) - *Untuk menentukan apakah perlu logo `Lock`*
+* `order` (Int)
+
+### 6. `enrollments` (Pendaftaran & Progress Belajar)
+Menghubungkan `users` dengan `courses` yang dibeli dan melacak progress.
+* `id` (Primary Key)
+* `user_id` (Foreign Key -> `users.id`)
+* `course_id` (Foreign Key -> `courses.id`)
+* `progress_percentage` (Float) - *Contoh: 65%*
+* `last_accessed_at` (Timestamp)
+* `enrolled_at` (Timestamp)
+* `status` (Enum: `active`, `completed`, `refunded`)
+
+### 7. `certificates` (Sertifikat)
+Menyimpan kepemilikan sertifikat pengguna.
+* `id` (Primary Key)
+* `user_id` (Foreign Key -> `users.id`)
+* `course_id` (Foreign Key -> `courses.id`)
+* `issued_date` (Date)
+* `certificate_url` (String)
+
+### 8. `reviews` (Ulasan & Rating)
+Menyimpan ulasan siswa terhadap kursus.
+* `id` (Primary Key)
+* `course_id` (Foreign Key -> `courses.id`)
+* `user_id` (Foreign Key -> `users.id`)
+* `rating` (Int, 1-5)
+* `comment` (Text)
+* `created_at` (Timestamp)
+
+### Tabel Pendukung Tambahan (Opsional sesuai UI)
+* **`events`**: Menyimpan data live sessions/acara dari komponen *"Upcoming Events"* di Dashboard. Atribut: `id`, `title`, `description`, `start_time`, `end_time`.
+* **`learning_paths`**: Mengelompokkan beberapa `courses` menjadi satu alur belajar (jika fitur learning path akan dinamis).
+
+> [!TIP]
+> **Skema ini dapat diimplementasikan menggunakan PostgreSQL atau MySQL.** Untuk backend e-learning modern, database relasional (SQL) sangat cocok karena transaksi pembayaran (`enrollments`) dan integritas progres belajar harus terjaga ketat.
