@@ -134,13 +134,18 @@
                 </button>
                 <div x-show="activeSection === 'module-{{ $module->id }}'" class="mt-6 space-y-4" style="{{ $currentLesson->module_id == $module->id ? '' : 'display:none;' }}">
                     @foreach($module->lessons as $lessonItem)
+                    @php
+                        $isCompleted = in_array($lessonItem->id, $completedLessonIds);
+                    @endphp
                     <a href="/course/{{ $course->id }}/learn/{{ $lessonItem->id }}" class="flex items-center gap-3 text-sm transition-colors group {{ $currentLesson->id == $lessonItem->id ? 'font-black text-primary' : 'font-bold text-tertiary hover:text-on-surface' }}">
-                        @if($currentLesson->id == $lessonItem->id)
-                        <div class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
+                        @if($isCompleted)
+                        <i data-lucide="check-circle" class="text-green-500 w-5 h-5 flex-shrink-0"></i>
+                        @elseif($currentLesson->id == $lessonItem->id)
+                        <div class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center flex-shrink-0 ml-0.5">
                             <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
                         </div>
                         @else
-                        <div class="w-4 h-4 rounded-full border-2 border-surface-container-high"></div>
+                        <div class="w-4 h-4 rounded-full border-2 border-surface-container-high flex-shrink-0 ml-0.5"></div>
                         @endif
                         <span>{{ $lessonItem->title }}</span>
                     </a>
@@ -181,10 +186,17 @@
 
             <form action="/course/{{ $course->id }}/learn/{{ $currentLesson->id }}/complete" method="POST">
                 @csrf
-                <button type="submit" class="flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                @if(in_array($currentLesson->id, $completedLessonIds))
+                <button type="submit" disabled class="flex items-center gap-2 px-8 py-3 rounded-full bg-green-500 text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-green-500/20 opacity-80 cursor-default">
                     <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    Completed
+                </button>
+                @else
+                <button type="submit" class="flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                    <i data-lucide="circle" class="w-4 h-4"></i>
                     Mark as Complete
                 </button>
+                @endif
             </form>
 
             @if($nextLesson)

@@ -29,19 +29,28 @@ class LearningController extends Controller
 
         // Fetch User 1 Enrollment Progress
         $userId = 1;
+        $user = \App\Models\User::find($userId);
         $enrollment = Enrollment::where('user_id', $userId)->where('course_id', $course->id)->first();
-        $progressPercent = $enrollment ? $enrollment->progress_percentage : 0;
         
+        $completedLessonIds = $user->completedLessons->pluck('id')->toArray();
         $totalLessons = $allLessons->count();
-        $completedLessonsCount = ceil(($progressPercent / 100) * $totalLessons);
+        $courseLessonIds = $allLessons->pluck('id')->toArray();
+        $completedLessonsCount = collect($completedLessonIds)->intersect($courseLessonIds)->count();
+        
+        $progressPercent = $totalLessons > 0 ? ceil(($completedLessonsCount / $totalLessons) * 100) : 0;
 
-        return view('pages.lesson', compact('course', 'currentLesson', 'prevLesson', 'nextLesson', 'progressPercent', 'totalLessons', 'completedLessonsCount'));
+        return view('pages.lesson', compact('course', 'currentLesson', 'prevLesson', 'nextLesson', 'progressPercent', 'totalLessons', 'completedLessonsCount', 'completedLessonIds'));
     }
 
     public function complete(Request $request, $course_id, $lesson_id)
     {
         $userId = 1;
+        $user = \App\Models\User::find($userId);
         $course = Course::with(['modules.lessons'])->findOrFail($course_id);
+        
+        // Record passing
+        $user->completedLessons()->syncWithoutDetaching([$lesson_id]);
+
         $enrollment = Enrollment::where('user_id', $userId)->where('course_id', $course_id)->first();
 
         // Get Next Lesson
@@ -55,9 +64,11 @@ class LearningController extends Controller
             : null;
 
         if ($enrollment) {
-            $totalLessons = $allLessons->count() ?: 1;
-            $increment = 100 / $totalLessons;
-            $newProgress = min(100, $enrollment->progress_percentage + $increment);
+            $courseLessonIds = $allLessons->pluck('id')->toArray();
+            $completedCount = $user->completedLessons()->whereIn('lesson_id', $courseLessonIds)->count();
+            $totalLessons = count($courseLessonIds) ?: 1;
+            
+            $newProgress = min(100, ceil(($completedCount / $totalLessons) * 100));
             
             $enrollment->update([
                 'progress_percentage' => $newProgress,
