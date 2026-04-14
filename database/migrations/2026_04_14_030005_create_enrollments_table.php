@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
-            $table->float('progress_percentage')->default(0);
             $table->timestamp('last_accessed_at')->nullable();
             $table->timestamp('enrolled_at')->useCurrent();
             $table->enum('status', ['active', 'completed', 'refunded'])->default('active');

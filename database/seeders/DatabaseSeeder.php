@@ -59,7 +59,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Enrollment::factory()->create([
             'user_id' => $student->id,
             'course_id' => $realCourse->id,
-            'progress_percentage' => 65
         ]);
 
         $otherCourses = \App\Models\Course::where('id', '!=', $realCourse->id)->inRandomOrder()->limit(2)->get();
@@ -67,7 +66,6 @@ class DatabaseSeeder extends Seeder
             \App\Models\Enrollment::factory()->create([
                 'user_id' => $student->id,
                 'course_id' => $course->id,
-                'progress_percentage' => rand(10, 100)
             ]);
         }
     }

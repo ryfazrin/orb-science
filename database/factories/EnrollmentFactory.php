@@ -15,7 +15,6 @@ class EnrollmentFactory extends Factory
             'course_id' => Course::factory(),
             'enrolled_at' => fake()->dateTimeBetween('-1 year', 'now'),
             'last_accessed_at' => fake()->dateTimeBetween('-1 month', 'now'),
-            'progress_percentage' => fake()->numberBetween(0, 100),
             'status' => fake()->randomElement(['active', 'completed']),
         ];
     }

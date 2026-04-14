@@ -5,7 +5,7 @@
     <div class="mb-12">
         <h1 class="text-5xl font-black tracking-tighter text-on-surface mb-2">Welcome back, {{ explode(' ', $user->name)[0] }}</h1>
         <p class="text-lg text-tertiary">
-            You've completed 40% of your current{' '}
+            {{-- You've completed 40% of your current --}}
             <a href="/pathway" class="text-primary font-bold hover:underline">learning path</a>.
         </p>
     </div>

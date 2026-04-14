@@ -38,7 +38,6 @@ class CheckoutController extends Controller
             'user_id' => $userId,
             'course_id' => $course->id,
             'status' => 'active',
-            'progress_percentage' => 0
         ]);
 
         return redirect('/dashboard')->with('success', 'Payment successful! Welcome to the course.');

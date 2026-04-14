@@ -68,12 +68,11 @@ class LearningController extends Controller
             $completedCount = $user->completedLessons()->whereIn('lesson_id', $courseLessonIds)->count();
             $totalLessons = count($courseLessonIds) ?: 1;
             
-            $newProgress = min(100, ceil(($completedCount / $totalLessons) * 100));
+            $newProgress = ceil(($completedCount / $totalLessons) * 100);
             
             $enrollment->update([
-                'progress_percentage' => $newProgress,
                 'last_accessed_at' => now(),
-                'status' => $newProgress == 100 ? 'completed' : 'active'
+                'status' => $newProgress >= 100 ? 'completed' : 'active'
             ]);
         }
 
