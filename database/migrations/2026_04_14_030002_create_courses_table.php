@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 10, 2)->default(0);
             $table->string('thumbnail_url')->nullable();
+            $table->string('category')->nullable();
             $table->string('difficulty')->nullable();
             $table->string('language')->nullable();
             $table->float('duration_hours')->nullable();

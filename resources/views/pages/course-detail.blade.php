@@ -10,14 +10,14 @@
                 BESTSELLER COURSE
             </div>
             <h1 class="text-5xl lg:text-7xl font-black text-on-surface mb-8 leading-[0.9] tracking-tighter">
-                Mastering <span class="text-primary">Python</span> for Beginners
+                {{ $course->title }}
             </h1>
             <p class="text-xl text-tertiary mb-10 leading-relaxed max-w-xl font-medium">
-                Finally, a programming course designed for human beings. No complex jargon, just clear, step-by-step guidance to build your first apps.
+                {{ $course->description }}
             </p>
             <div class="flex flex-wrap gap-6 items-center">
-                <a href="/checkout" class="inline-block bg-primary text-white px-10 py-5 rounded-full font-black text-lg shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    Enroll Now — Rp 499.000
+                <a href="/checkout/{{ $course->id }}" class="inline-block bg-primary text-white px-10 py-5 rounded-full font-black text-lg shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    Enroll Now — Rp {{ number_format($course->price, 0, ',', '.') }}
                 </a>
                 <div class="flex items-center gap-4">
                     <div class="flex -space-x-3">
@@ -38,7 +38,7 @@
             <div class="aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl bg-surface-container-high relative group">
                 <img 
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                    src="https://picsum.photos/seed/python/1200/800"
+                    src="{{ $course->thumbnail_url ?? 'https://picsum.photos/seed/python/1200/800' }}"
                     alt="Course Preview"
                     referrerpolicy="no-referrer"
                 />
@@ -55,7 +55,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-tertiary font-black uppercase tracking-widest">Duration</p>
-                        <p class="text-2xl font-black text-on-surface tracking-tighter">12.5 Hours</p>
+                        <p class="text-2xl font-black text-on-surface tracking-tighter">{{ $totalDuration }} Mins</p>
                     </div>
                 </div>
             </div>
@@ -66,10 +66,10 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32">
         @php
         $metas = [
-            ['icon' => 'bar-chart', 'label' => 'Difficulty', 'value' => 'Absolute Beginner'],
-            ['icon' => 'globe', 'label' => 'Language', 'value' => 'Bahasa Indonesia'],
-            ['icon' => 'refresh-cw', 'label' => 'Last Updated', 'value' => 'Jan 2026'],
-            ['icon' => 'award', 'label' => 'Certificate', 'value' => 'Included']
+            ['icon' => 'bar-chart', 'label' => 'Difficulty', 'value' => $course->difficulty ?? 'Beginner'],
+            ['icon' => 'globe', 'label' => 'Language', 'value' => $course->language ?? 'English'],
+            ['icon' => 'refresh-cw', 'label' => 'Last Updated', 'value' => $course->updated_at->format('M Y')],
+            ['icon' => 'award', 'label' => 'Certificate', 'value' => $course->certificate_included ? 'Included' : 'Not Included']
         ];
         @endphp
         @foreach($metas as $item)
@@ -90,41 +90,26 @@
                     Course Syllabus
                 </h2>
                 <div class="space-y-6">
-                    @php
-                    $modules = [
-                        ['id' => 1, 'title' => 'Foundations of Python', 'lessons' => 8, 'open' => true],
-                        ['id' => 2, 'title' => 'Control Flow & Logic', 'lessons' => 12, 'open' => false],
-                        ['id' => 3, 'title' => 'Real-World Projects', 'lessons' => 5, 'open' => false]
-                    ];
-                    @endphp
-                    @foreach($modules as $module)
+                    @foreach($course->modules as $index => $module)
                     <div class="bg-surface-container-low rounded-[2rem] border border-surface-container-high overflow-hidden" 
-                         x-data="{ open: {{ $module['open'] ? 'true' : 'false' }} }">
+                         x-data="{ open: {{ $index === 0 ? 'true' : 'false' }} }">
                         <button @click="open = !open" class="w-full p-8 flex justify-between items-center text-left focus:outline-none">
                             <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 rounded-2xl bg-surface-container-high flex items-center justify-center font-black text-primary">{{ $module['id'] }}</div>
-                                <span class="text-xl font-black tracking-tight">{{ $module['title'] }}</span>
+                                <div class="w-12 h-12 rounded-2xl bg-surface-container-high flex items-center justify-center font-black text-primary">{{ $module->order }}</div>
+                                <span class="text-xl font-black tracking-tight">{{ $module->title }}</span>
                             </div>
                             <i data-lucide="chevron-down" x-show="!open" class="w-6 h-6"></i>
                             <i data-lucide="chevron-up" x-show="open" style="display: none;" class="w-6 h-6"></i>
                         </button>
                         
                         <div x-show="open" class="px-8 pb-8 space-y-4">
-                            <a href="/lesson/1" class="flex items-center gap-4 p-4 rounded-2xl hover:bg-surface-container-high cursor-pointer transition-colors group block">
-                                <i data-lucide="play-circle" class="text-primary w-5 h-5"></i>
-                                <span class="flex-grow font-bold text-tertiary group-hover:text-on-surface">Installing Python & VS Code</span>
-                                <span class="text-xs font-black text-tertiary">08:45</span>
+                            @foreach($module->lessons as $lesson)
+                            <a href="/course/{{ $course->id }}/learn/{{ $lesson->id }}" class="flex items-center gap-4 p-4 rounded-2xl hover:bg-surface-container-high cursor-pointer transition-colors group block">
+                                <i data-lucide="{{ $lesson->type == 'video' ? 'play-circle' : 'file-text' }}" class="text-primary w-5 h-5"></i>
+                                <span class="flex-grow font-bold text-tertiary group-hover:text-on-surface">{{ $lesson->title }}</span>
+                                <span class="text-xs font-black text-tertiary">{{ $lesson->duration_minutes }}m</span>
                             </a>
-                            <a href="/lesson/2" class="flex items-center gap-4 p-4 rounded-2xl hover:bg-surface-container-high cursor-pointer transition-colors group block">
-                                <i data-lucide="play-circle" class="text-primary w-5 h-5"></i>
-                                <span class="flex-grow font-bold text-tertiary group-hover:text-on-surface">Variables and Data Types</span>
-                                <span class="text-xs font-black text-tertiary">15:20</span>
-                            </a>
-                            <div class="flex items-center gap-4 p-4 rounded-2xl opacity-50">
-                                <i data-lucide="file-text" class="text-tertiary w-5 h-5"></i>
-                                <span class="flex-grow font-bold text-tertiary">Practice Quiz: Foundations</span>
-                                <i data-lucide="lock" class="text-tertiary w-4 h-4"></i>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     @endforeach
@@ -175,11 +160,11 @@
             <section class="bg-surface-container-lowest p-10 rounded-[2.5rem] shadow-2xl shadow-primary/5 border border-surface-container-high">
                 <h3 class="text-2xl font-black mb-8 tracking-tight">Your Instructor</h3>
                 <div class="flex flex-col items-center text-center">
-                    <img class="w-32 h-32 rounded-full mb-6 ring-4 ring-primary/10" src="https://picsum.photos/seed/raka/200/200" alt="Instructor" referrerpolicy="no-referrer" />
-                    <h4 class="text-2xl font-black mb-1">Raka Kurnia</h4>
-                    <p class="text-primary font-black text-xs uppercase tracking-widest mb-6">Senior Developer @ TechCo</p>
+                    <img class="w-32 h-32 rounded-full mb-6 ring-4 ring-primary/10" src="https://picsum.photos/seed/{{ $course->instructor->id }}/200/200" alt="Instructor" referrerpolicy="no-referrer" />
+                    <h4 class="text-2xl font-black mb-1">{{ $course->instructor->user->name ?? 'Instructor' }}</h4>
+                    <p class="text-primary font-black text-xs uppercase tracking-widest mb-6">{{ $course->instructor->job_title ?? 'Senior Instructor' }}</p>
                     <p class="text-sm text-tertiary leading-relaxed font-medium">
-                        Raka has taught over 50,000 students globally. He specializes in making complex computer science topics accessible to everyone.
+                        Instructor has taught over {{ $course->instructor->total_students ?? 1000 }} students globally.
                     </p>
                     <div class="flex gap-4 mt-8">
                         <button class="w-12 h-12 rounded-2xl bg-surface-container-low flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors">
@@ -221,8 +206,8 @@
             <!-- Floating Sticky CTA -->
             <div class="hidden lg:block sticky top-28 p-10 border-2 border-primary/20 rounded-[2.5rem] bg-surface-container-lowest shadow-2xl shadow-primary/5">
                 <p class="text-xs font-black text-tertiary mb-2 uppercase tracking-widest">Lifetime Access</p>
-                <div class="text-4xl font-black text-on-surface mb-8 tracking-tighter">Rp 499.000</div>
-                <a href="/checkout" class="block w-full text-center py-5 bg-primary text-white rounded-full font-black text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all mb-6">
+                <div class="text-4xl font-black text-on-surface mb-8 tracking-tighter">Rp {{ number_format($course->price, 0, ',', '.') }}</div>
+                <a href="/checkout/{{ $course->id }}" class="block w-full text-center py-5 bg-primary text-white rounded-full font-black text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all mb-6">
                     Enroll Now
                 </a>
                 <p class="text-xs text-center text-tertiary font-bold uppercase tracking-widest">30-day money back guarantee</p>
