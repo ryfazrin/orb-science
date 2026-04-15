@@ -58,7 +58,10 @@
             </section>
 
             <section>
-                <h2 class="text-2xl font-black tracking-tight text-on-surface mb-6">Recommended for You</h2>
+                <h2 class="text-2xl font-black tracking-tight text-on-surface mb-6 flex items-center gap-3">
+                    Recommended for You
+                    <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[10px] uppercase font-black border border-yellow-500/20">Coming Soon</span>
+                </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     @foreach([1, 2] as $i)
                     <div class="p-6 rounded-3xl bg-surface-container-low border border-surface-container-high hover:tonal-lift transition-all">
@@ -87,7 +90,10 @@
         <!-- Sidebar -->
         <div class="space-y-8">
             <div class="p-8 rounded-[2.5rem] bg-primary text-white shadow-2xl shadow-primary/20">
-                <h3 class="text-2xl font-black tracking-tight mb-4">Your Achievements</h3>
+                <h3 class="text-2xl font-black tracking-tight mb-4 flex justify-between items-center">
+                    Your Achievements
+                    <span class="px-2 py-0.5 rounded bg-white/20 text-white text-[10px] uppercase font-black">Coming Soon</span>
+                </h3>
                 <div class="space-y-6">
                     @php
                     $achievements = [
@@ -112,7 +118,10 @@
             </div>
 
             <div class="p-8 rounded-[2.5rem] bg-surface-container-low border border-surface-container-high">
-                <h3 class="text-xl font-black tracking-tight text-on-surface mb-6">Upcoming Events</h3>
+                <h3 class="text-xl font-black tracking-tight text-on-surface mb-6 flex justify-between items-center">
+                    Upcoming Events
+                    <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[10px] uppercase font-black border border-yellow-500/20">Coming Soon</span>
+                </h3>
                 <div class="space-y-6">
                     @foreach([1, 2] as $i)
                     <div class="flex gap-4">

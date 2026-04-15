@@ -5,7 +5,7 @@
 <div class="flex min-h-[calc(100vh-5rem)] bg-surface relative" x-data="{ isSidebarOpen: true, activeSection: 'module-{{ $currentLesson->module_id }}' }">
     <!-- Main Content Area -->
     <div class="flex-1 transition-all duration-300" :class="isSidebarOpen ? 'xl:mr-96' : ''">
-        <div class="px-6 lg:px-20 py-12 max-w-5xl mx-auto">
+        <div class="px-6 lg:px-20 pt-12 pb-36 max-w-5xl mx-auto">
             <!-- Breadcrumbs -->
             <nav class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-tertiary mb-8">
                 <a href="/catalog" class="hover:text-primary cursor-pointer">Courses</a>
@@ -15,92 +15,20 @@
                 <span class="text-primary">{{ $currentLesson->title }}</span>
             </nav>
 
-            <article class="space-y-12">
-                <div class="space-y-6">
-                    <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-on-surface leading-[0.9]">
+            <article>
+                <div class="prose prose-lg max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-pre:bg-surface-container-lowest prose-pre:text-on-surface prose-pre:border prose-pre:border-surface-container-high prose-pre:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-l-primary prose-blockquote:bg-surface-container-high/30 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:text-on-surface prose-img:rounded-3xl prose-img:shadow-xl text-on-surface/90 leading-relaxed mb-12">
+                    <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-on-surface leading-[0.9] !mb-12">
                         {{ $currentLesson->title }}
                     </h1>
-                    <p class="text-xl text-tertiary leading-relaxed max-w-3xl font-medium">
-                        A singly linked list is a linear data structure where each element is a separate object, called a node. Each node contains data and a reference to the next node in the sequence.
-                    </p>
-                </div>
 
-                <!-- Video Player Placeholder -->
-                <div class="relative group aspect-video rounded-[2.5rem] overflow-hidden bg-on-surface shadow-2xl">
-                    <img 
-                        alt="Video Placeholder" 
-                        class="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" 
-                        src="https://picsum.photos/seed/linkedlist/1200/800"
-                        referrerpolicy="no-referrer"
-                    />
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <button class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center transition-all hover:scale-110 shadow-2xl shadow-primary/40 group/btn">
-                            <i data-lucide="play" class="w-10 h-10 ml-2 fill-current"></i>
-                        </button>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
-                        <p class="text-white text-xl font-black tracking-tight">Lecture 4.2: Traversing the Chain</p>
-                        <p class="text-white/60 text-sm font-bold uppercase tracking-widest mt-1">12:45 minutes</p>
-                    </div>
-                </div>
-
-                <!-- Reading Section -->
-                <div class="prose prose-lg max-w-none text-on-surface/90 leading-relaxed space-y-8">
-                    <h2 class="text-3xl font-black tracking-tight text-on-surface">The Anatomy of a Node</h2>
-                    <p class="text-lg">
-                        In a singly linked list, each node is composed of two items: the <strong class="text-primary">data</strong> and a <strong class="text-primary">next</strong> pointer. This differs from arrays, which occupy a contiguous block of memory. Nodes in a linked list can be scattered throughout memory, connected only by their pointers.
-                    </p>
-
-                    <!-- Pros & Cons Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
-                        <div class="bg-surface-container-low p-8 rounded-[2rem] border border-surface-container-high">
-                            <h3 class="text-xl font-black tracking-tight mb-6 text-primary uppercase tracking-widest">Pros</h3>
-                            <ul class="space-y-4">
-                                <li class="flex items-start gap-3">
-                                    <i data-lucide="check-circle" class="text-green-600 mt-1 flex-shrink-0 w-5 h-5"></i>
-                                    <span class="font-medium">Dynamic size: Grows or shrinks as needed during execution.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i data-lucide="check-circle" class="text-green-600 mt-1 flex-shrink-0 w-5 h-5"></i>
-                                    <span class="font-medium">Ease of Insertion/Deletion: No shifting elements required.</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="bg-surface-container-high p-8 rounded-[2rem]">
-                            <h3 class="text-xl font-black tracking-tight mb-6 text-on-surface uppercase tracking-widest">Cons</h3>
-                            <ul class="space-y-4">
-                                <li class="flex items-start gap-3">
-                                    <i data-lucide="x-circle" class="text-red-500 mt-1 flex-shrink-0 w-5 h-5"></i>
-                                    <span class="font-medium">Random access is not allowed: Must traverse from head.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i data-lucide="x-circle" class="text-red-500 mt-1 flex-shrink-0 w-5 h-5"></i>
-                                    <span class="font-medium">Extra memory space: For pointer storage in each node.</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <p class="text-lg">
-                        Linked lists are particularly useful when you don't know the number of elements in advance or when you need to perform frequent insertions and deletions. However, they come with the trade-off of slower access times for specific elements compared to arrays.
-                    </p>
-
-                    <div class="rounded-[2.5rem] overflow-hidden my-12 shadow-xl bg-surface-container-lowest p-8 border border-surface-container-high">
-                        <img 
-                            class="w-full h-auto rounded-2xl mb-6" 
-                            src="https://picsum.photos/seed/code/1200/600"
-                            alt="Code Visualization"
-                            referrerpolicy="no-referrer"
-                        />
-                        <p class="text-center text-sm text-tertiary font-bold italic">Visualizing memory allocation in dynamic structures.</p>
-                    </div>
+                    {!! Str::markdown($currentLesson->content ?? '*No content available for this lesson.*') !!}
                 </div>
             </article>
         </div>
     </div>
 
     <!-- Sidebar - Course Content -->
-    <aside class="hidden xl:flex h-[calc(100vh-5rem)] w-96 fixed right-0 top-20 bg-surface-container-low border-l border-surface-container-high flex-col p-8 gap-y-8 overflow-y-auto transition-transform duration-300"
+    <aside class="hidden xl:flex h-[calc(100vh-5rem)] w-96 fixed right-0 top-20 bg-surface-container-low border-l border-surface-container-high flex-col px-8 pt-8 pb-32 gap-y-8 overflow-y-auto transition-transform duration-300"
            :class="isSidebarOpen ? 'translate-x-0' : 'translate-x-full'">
         <div class="space-y-4">
             <div class="flex justify-between items-center">
@@ -155,8 +83,9 @@
             @endforeach
         </div>
 
-        <button class="w-full py-4 rounded-2xl bg-on-surface text-surface font-black tracking-tight hover:bg-on-surface/90 transition-all shadow-xl">
+        <button disabled class="w-full py-4 rounded-2xl bg-surface-container-high text-tertiary flex items-center justify-center gap-2 font-black tracking-tight cursor-not-allowed  opacity-70 transition-all">
             View Certificate
+            <span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-tertiary text-[9px] uppercase">Soon</span>
         </button>
     </aside>
 

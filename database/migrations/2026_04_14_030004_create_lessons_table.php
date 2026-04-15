@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->enum('type', ['video', 'quiz', 'article']);
             $table->integer('duration_minutes');
-            $table->string('video_url')->nullable();
+            $table->longText('content')->nullable();
             $table->boolean('is_free_preview')->default(false);
             $table->integer('order');
             $table->timestamps();

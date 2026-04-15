@@ -32,14 +32,14 @@
                 <a href="/catalog" class="text-sm font-semibold tracking-tight transition-colors {{ Request::is('catalog*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
                     Catalog
                 </a>
-                <a href="/pathway" class="text-sm font-semibold tracking-tight transition-colors {{ Request::is('pathway*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
-                    Pathway
+                <a href="/pathway" class="flex items-center text-sm font-semibold tracking-tight transition-colors {{ Request::is('pathway*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
+                    Pathway <span class="ml-2 flex items-center px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black">Soon</span>
                 </a>
-                <a href="/article" class="text-sm font-semibold tracking-tight transition-colors {{ Request::is('article*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
-                    Articles
+                <a href="/article" class="flex items-center text-sm font-semibold tracking-tight transition-colors {{ Request::is('article*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
+                    Articles <span class="ml-2 flex items-center px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black">Soon</span>
                 </a>
-                <a href="/pricing" class="text-sm font-semibold tracking-tight transition-colors {{ Request::is('pricing*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
-                    Pricing
+                <a href="/pricing" class="flex items-center text-sm font-semibold tracking-tight transition-colors {{ Request::is('pricing*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
+                    Pricing <span class="ml-2 flex items-center px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black">Soon</span>
                 </a>
             </nav>
 
@@ -48,6 +48,7 @@
                     <a href="/profile" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors">
                         <i data-lucide="user" class="w-4 h-4"></i>
                         <span class="hidden sm:inline">Profile</span>
+                        <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black ml-1">Soon</span>
                     </a>
                     <form method="POST" action="/logout" class="inline">
                         @csrf
@@ -61,6 +62,7 @@
                     <a href="/profile" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors">
                         <i data-lucide="user" class="w-[18px] h-[18px]"></i>
                         <span class="hidden sm:inline">Profile</span>
+                        <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black ml-1">Soon</span>
                     </a>
                     <button class="flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-primary text-white shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
                         <i data-lucide="log-out" class="w-[18px] h-[18px]"></i>
