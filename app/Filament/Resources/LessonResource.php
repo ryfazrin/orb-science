@@ -39,19 +39,23 @@ class LessonResource extends Resource
                 Forms\Components\TextInput::make('duration_minutes')
                     ->required()
                     ->numeric(),
-                Forms\Components\Grid::make(2)
-                    ->schema([
-                        Forms\Components\MarkdownEditor::make('content')
-                            ->fileAttachmentsDirectory('lessons')
-                            ->live(debounce: 500)
-                            ->columnSpan(1),
-                            
-                        Forms\Components\Placeholder::make('preview')
-                            ->label('Live Preview (Siswa)')
-                            ->content(fn ($get) => new \Illuminate\Support\HtmlString(
-                                view('filament.components.markdown-preview', ['content' => $get('content')])->render()
-                            ))
-                            ->columnSpan(1),
+                Forms\Components\Tabs::make('Content Tabs')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Editor Mode')
+                            ->schema([
+                                Forms\Components\MarkdownEditor::make('content')
+                                    ->fileAttachmentsDirectory('lessons')
+                                    ->live(debounce: 500)
+                                    ->hiddenLabel()
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Live Preview (Hasil)')
+                            ->schema([
+                                Forms\Components\Placeholder::make('preview')
+                                    ->hiddenLabel()
+                                    ->content(fn ($get) => new \Illuminate\Support\HtmlString(
+                                        view('filament.components.markdown-preview', ['content' => $get('content')])->render()
+                                    ))
+                            ])
                     ])
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_free_preview')

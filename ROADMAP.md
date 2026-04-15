@@ -18,10 +18,10 @@ Menghapus _Dummy User Id 1_ dan mengaktifkan kemampuan Register/Login mandiri.
 - **Teknologi**: Laravel Breeze (Blade/Alpine).
 - **Tugas Utama**: Menginstal sistem Auth. Sinkronisasi Controller `LearningController`, `CheckoutController` dan `DashboardController` untuk membaca data murni dari `Auth::user()->id()`. Memastikan Rute utama dilindungi dengan perlindungan _Middleware_.
 
-### (ON PROGRESS) Tahap 5: Instructor / Admin Panel (Pengelolaan Konten)
+### ✅ Tahap 5: Instructor / Admin Panel (Pengelolaan Konten)
 LMS tidak lengkap tanpa dasbor untuk Pembuat Konten/Tutor, karena memodifikasi kode via _Database Seeder_ tidaklah relevan untuk ranah _produksi_.
 - **Teknologi**: Rekomendasi terkuat menggunakan **Filament PHP** panel. Sangat cepat, modern, dan sejalur dengan ekosistem Laravel Tailwiind.
-- **Tugas Utama**: Membuat CRUD Resources untuk tabel `Courses`, `Modules`, `Lessons`. Termasuk kolom pengisi konten berformat Markdown.
+- **Tugas Utama**: Membuat CRUD Resources untuk tabel `Courses`, `Modules`, `Lessons`. Termasuk kolom pengisi konten berformat Markdown dan KaTeX.
 
 ### (HOLD) Tahap 6: Integrasi Payment Gateway (Checkout Asli)
 Menerima uang ke rekening platform secara valid.
@@ -43,7 +43,7 @@ Sebagai respon dari kebutuhan evaluasi siswa sebelum dinyatakan lulus kursus.
 ### Tahap 9: Sistem Artikel (Blog & CMS)
 Artikel berfungsi sebagai media literasi gratis dan pendongkrak SEO LMS Anda. Ini bukan fitur sekunder sembarangan.
 - **Kebutuhan Database**: Tabel `articles` (slug, title, content, published_at), tabel `categories`, dan pivot `article_tag`.
-- **Kebutuhan Admin Panel**: Pembuatan form editor purna jual di Filament untuk mengunggah The *Thumbnail Image*, menulis konten dengan *Markdown Compiler* atau *WYSIWYG*, beserta konfigurasi status (Draft/Publish).
+- **Kebutuhan Admin Panel**: Pembuatan form editor purna jual di Filament untuk mengunggah The *Thumbnail Image*, menulis konten dengan *Markdown Compiler* dan preview, beserta konfigurasi status (Draft/Publish).
 - **Kebutuhan Front-end**: Laman `/article` (Katalog Artikel dengan pemfilteran) dan `/article/{slug}` (Halaman baca memanjang dioptimasi Tailwind Typography).
 
 ### Tahap 10: Sistem Algoritma Rekomendasi
