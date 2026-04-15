@@ -13,17 +13,17 @@ Dokumen ini berfungsi sebagai peta jalan (roadmap) agar arah pengembangan LMS **
 
 ## 🚀 Fase Pengembangan Selanjutnya
 
-### Tahap 4: Autentikasi Asli (Sistem Identitas)
+### ✅ Tahap 4: Autentikasi Asli (Sistem Identitas)
 Menghapus _Dummy User Id 1_ dan mengaktifkan kemampuan Register/Login mandiri.
 - **Teknologi**: Laravel Breeze (Blade/Alpine).
 - **Tugas Utama**: Menginstal sistem Auth. Sinkronisasi Controller `LearningController`, `CheckoutController` dan `DashboardController` untuk membaca data murni dari `Auth::user()->id()`. Memastikan Rute utama dilindungi dengan perlindungan _Middleware_.
 
-### Tahap 5: Instructor / Admin Panel (Pengelolaan Konten)
+### (ON PROGRESS) Tahap 5: Instructor / Admin Panel (Pengelolaan Konten)
 LMS tidak lengkap tanpa dasbor untuk Pembuat Konten/Tutor, karena memodifikasi kode via _Database Seeder_ tidaklah relevan untuk ranah _produksi_.
 - **Teknologi**: Rekomendasi terkuat menggunakan **Filament PHP** panel. Sangat cepat, modern, dan sejalur dengan ekosistem Laravel Tailwiind.
 - **Tugas Utama**: Membuat CRUD Resources untuk tabel `Courses`, `Modules`, `Lessons`. Termasuk kolom pengisi konten berformat Markdown.
 
-### Tahap 6: Integrasi Payment Gateway (Checkout Asli)
+### (HOLD) Tahap 6: Integrasi Payment Gateway (Checkout Asli)
 Menerima uang ke rekening platform secara valid.
 - **Teknologi**: Midtrans Snap API (Ideal untuk lokalisasi Rupiah) / Stripe.
 - **Tugas Utama**: Sistem simulasi akan dilepas. Menangani Webhook Midtrans. Apabila balasan Server adalah HTTP 200 (Success), barulah model `Enrollment` dibuat dan membuka pintu gerbang belajar bagi siswa yang membayar.
