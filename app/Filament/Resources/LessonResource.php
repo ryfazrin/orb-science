@@ -39,8 +39,20 @@ class LessonResource extends Resource
                 Forms\Components\TextInput::make('duration_minutes')
                     ->required()
                     ->numeric(),
-                Forms\Components\MarkdownEditor::make('content')
-                    ->fileAttachmentsDirectory('lessons')
+                Forms\Components\Grid::make(2)
+                    ->schema([
+                        Forms\Components\MarkdownEditor::make('content')
+                            ->fileAttachmentsDirectory('lessons')
+                            ->live(debounce: 500)
+                            ->columnSpan(1),
+                            
+                        Forms\Components\Placeholder::make('preview')
+                            ->label('Live Preview (Siswa)')
+                            ->content(fn ($get) => new \Illuminate\Support\HtmlString(
+                                view('filament.components.markdown-preview', ['content' => $get('content')])->render()
+                            ))
+                            ->columnSpan(1),
+                    ])
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_free_preview')
                     ->required(),
