@@ -1,59 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <h1>🚀 Orb-Science LMS</h1>
+  <p><strong>Platform Manajemen Pembelajaran Terdepan untuk Era Digital</strong></p>
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## 🌟 Mengapa Memilih Orb-Science?
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Dalam dunia pendidikan modern, pengalaman belajar adalah segalanya. **Orb-Science** hadir sebagai solusi sistem manajemen pembelajaran (LMS) revolusioner yang dirancang khusus untuk memadukan keindahan, kecepatan, dan fungsionalitas. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Baik Anda seorang instruktur yang ingin menyajikan materi edukatif dengan presisi, maupun institusi yang menuntut performa tinggi, Orb-Science dirancang dari awal untuk memberikan pengalaman belajar yang luar biasa.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### ✨ Fitur Unggulan
 
-## Learning Laravel
+*   **📚 Kurikulum Tersistem**
+    Kelola *Course*, *Module*, dan *Lesson* dengan mudah. Struktur hierarki yang jelas memastikan perjalanan belajar yang terarah dan optimal.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+*   **⚡ Filament Admin Panel yang Elegan**
+    Menggunakan teknologi *Filament PHP* terbaru untuk memberikan dashboard admin dan instruktur yang intuitif, cepat, dan sangat responsif. Anda dapat fokus pada konten pelajaran, tanpa perlu pusing dengan antarmuka yang rumit.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+*   **✍️ Editor Markdown Interaktif + Live Preview**
+    Menulis materi belajar kini menjadi pengalaman yang menyenangkan. Instruktur dapat menulis menggunakan Markdown dengan *Live Preview* sehingga bisa memastikan hasil akhir materi pelajaran terlihat sempurna sebelum diterbitkan.
 
-## Laravel Sponsors
+*   **🧮 Integrasi Matematika Kompleks (KaTeX)**
+    Visualisasikan rumus matematika dan sains dengan sempurna. Integrasi **KaTeX** pada antarmuka siswa memastikan bahwa seluruh persamaan matematika—mulai dari aljabar dasar hingga kalkulus kompleks—ditampilkan dengan mulus, indah, dan presisi tinggi tanpa membebani performa aplikasi.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+*   **🔒 Cepat, Aman & Modern (Powered by Laravel)**
+    Dibangun di atas fondasi kokoh framework Laravel, menjamin performa skalabilitas tingkat tinggi dan keamanan enterprise.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🎯 Target Audiens
 
-## Contributing
+1. **Sekolah & Universitas** – Hadirkan pengalaman belajar sains yang interaktif dengan rumus matematika yang tertata rapi.
+2. **Lembaga Bimbingan Belajar & Kursus Online** – Struktur materi (Kursus & Modul) memudahkan pembagian materi belajar berjenjang.
+3. **Instruktur Independen** – Kelola konten pendidikan Anda sendiri tanpa batasan teknis.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🚀 Coba Karakteristik Orb-Science Sekarang
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Platform ini dirancang khusus untuk menyajikan materi berbobot dengan cara yang elegan. Kami menggabungkan kekuatan **Laravel** dan **Filament** di bagian *backend*, sementara tetap memberikan pengalaman visual (Markdown + KaTeX) terbaik di bagian *frontend* bagi siswa.
 
-## Security Vulnerabilities
+### Bergabung dengan Masa Depan Pendidikan
+Jadikan kualitas konten pendidikan Anda bersinar. Orb-Science adalah investasi terbaik Anda terhadap pertumbuhan talenta dan antusiasme belajar siswa.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<div align="center">
+  <em>Diciptakan dengan ❤️ untuk memajukan pendidikan yang lebih cerdas dan aksesibel.</em>
+</div>
