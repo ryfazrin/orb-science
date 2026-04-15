@@ -27,8 +27,8 @@ class LearningController extends Controller
         $prevLesson = $currentIndex > 0 ? $allLessons[$currentIndex - 1] : null;
         $nextLesson = $currentIndex < $allLessons->count() - 1 ? $allLessons[$currentIndex + 1] : null;
 
-        // Fetch User 1 Enrollment Progress
-        $userId = 1;
+        // Fetch Authenticated User Enrollment Progress
+        $userId = auth()->id();
         $user = \App\Models\User::find($userId);
         $enrollment = Enrollment::where('user_id', $userId)->where('course_id', $course->id)->first();
         
@@ -44,7 +44,7 @@ class LearningController extends Controller
 
     public function complete(Request $request, $course_id, $lesson_id)
     {
-        $userId = 1;
+        $userId = auth()->id();
         $user = \App\Models\User::find($userId);
         $course = Course::with(['modules.lessons'])->findOrFail($course_id);
         

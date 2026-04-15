@@ -14,8 +14,7 @@ class CheckoutController extends Controller
         $course = Course::findOrFail($id);
         
         // Cek jika user sudah terdaftar di course ini
-        // Untuk demo, kita pakai User ID 1 (Demo Student)
-        $userId = 1;
+        $userId = auth()->id();
         $alreadyEnrolled = Enrollment::where('user_id', $userId)
             ->where('course_id', $id)
             ->exists();
@@ -31,8 +30,7 @@ class CheckoutController extends Controller
     {
         $course = Course::findOrFail($id);
         
-        // Simulasi pembayaran: Langsung enrol user ID 1
-        $userId = 1;
+        $userId = auth()->id();
         
         Enrollment::create([
             'user_id' => $userId,

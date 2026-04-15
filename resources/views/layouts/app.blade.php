@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Ilmu Komputer</title>
 
     <!-- Vite CSS and JS -->
@@ -50,7 +51,7 @@
                         <span class="hidden sm:inline">Profile</span>
                         <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black ml-1">Soon</span>
                     </a>
-                    <form method="POST" action="/logout" class="inline">
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-primary text-white shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -58,16 +59,13 @@
                         </button>
                     </form>
                 @else
-                    <!-- For demo purposes, we always show profile/logout link in static pages via some condition or just dummy links -->
-                    <a href="/profile" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors">
-                        <i data-lucide="user" class="w-[18px] h-[18px]"></i>
-                        <span class="hidden sm:inline">Profile</span>
-                        <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black ml-1">Soon</span>
+                    <a href="/login" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors">
+                        <i data-lucide="log-in" class="w-[18px] h-[18px]"></i>
+                        <span class="hidden sm:inline">Log In</span>
                     </a>
-                    <button class="flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-primary text-white shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
-                        <i data-lucide="log-out" class="w-[18px] h-[18px]"></i>
-                        <span class="hidden sm:inline">Log Out</span>
-                    </button>
+                    <a href="/register" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-primary text-white shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
+                        <span class="hidden sm:inline">Register</span>
+                    </a>
                 @endauth
 
                 <button class="md:hidden p-2 text-tertiary">
@@ -80,10 +78,11 @@
     <!-- Main Content -->
     <main class="flex-grow">
         @yield('content')
+        {{ $slot ?? '' }}
     </main>
 
     <!-- Footer -->
-    @if(!Request::is('lesson'))
+    @if(!Request::is('course/*/learn/*'))
     <footer class="bg-surface-container-low py-12 border-t border-surface-container-high">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -101,5 +100,8 @@
     </footer>
     @endif
 
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

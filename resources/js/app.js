@@ -1,8 +1,7 @@
 import './bootstrap';
 
-// Initialize Lucide icons on page load
-document.addEventListener("DOMContentLoaded", () => {
-    if (window.lucide) {
-        lucide.createIcons();
-    }
-});
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
