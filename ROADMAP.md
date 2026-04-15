@@ -23,12 +23,17 @@ LMS tidak lengkap tanpa dasbor untuk Pembuat Konten/Tutor, karena memodifikasi k
 - **Teknologi**: Rekomendasi terkuat menggunakan **Filament PHP** panel. Sangat cepat, modern, dan sejalur dengan ekosistem Laravel Tailwiind.
 - **Tugas Utama**: Membuat CRUD Resources untuk tabel `Courses`, `Modules`, `Lessons`. Termasuk kolom pengisi konten berformat Markdown dan KaTeX.
 
-### (HOLD) Tahap 6: Integrasi Payment Gateway (Checkout Asli)
+### Tahap 6: Analisis Dasbor Admin (Dashboard Analytics)
+Melengkapi Panel Admin (Filament) dengan Widget Statistik dan Chart untuk memantau performa proyek E-Learning.
+- **Kebutuhan Fitur**: *Stats Overview Widget* (Pemantau Total Kursus, Total Siswa, Penjualan). Grafik Pendaftaran/Penyelesaian (Chart Widget).
+- **Target Capaian**: Visibilitas data performa bisnis secara *real-time* ketika instruktur baru saja masuk *_login_* ke Dasbor Admin.
+
+### (HOLD) Tahap 7: Integrasi Payment Gateway (Checkout Asli)
 Menerima uang ke rekening platform secara valid.
 - **Teknologi**: Midtrans Snap API (Ideal untuk lokalisasi Rupiah) / Stripe.
 - **Tugas Utama**: Sistem simulasi akan dilepas. Menangani Webhook Midtrans. Apabila balasan Server adalah HTTP 200 (Success), barulah model `Enrollment` dibuat dan membuka pintu gerbang belajar bagi siswa yang membayar.
 
-### Tahap 7: Mesin Ujian (Exam/Quiz Engine)
+### Tahap 8: Mesin Ujian (Exam/Quiz Engine)
 Sebagai respon dari kebutuhan evaluasi siswa sebelum dinyatakan lulus kursus.
 - **Konsep**: Membuat tipe Sub-Bab khusus (Lesson dengan `type='quiz'`).
 - **Tugas Utama**: 
@@ -36,34 +41,34 @@ Sebagai respon dari kebutuhan evaluasi siswa sebelum dinyatakan lulus kursus.
   - Pembangunan Database baru: `questions`, `options`, dan `user_answers`. 
   - Sistem penilaian _(Grading Logic)_. Mengharuskan skor lolos > 75% untuk bisa mengubah status _Mark as Complete_.
 
-### Tahap 8: Finishing & Polishing (User Profile & Sertifikat)
+### Tahap 9: Finishing & Polishing (User Profile & Sertifikat)
 - **Tugas Utama**: Dinamisasi ganti foto profil, ganti _password_, manajemen preferensi User.
 - Meluncurkan fitur Generator PDF (misal memakai `spatie/laravel-pdf`) ketika Kursus = 100%, sehingga tombol *View Certificate* dapat mengunduh dokumen secara sah.
 
-### Tahap 9: Sistem Artikel (Blog & CMS)
+### Tahap 10: Sistem Artikel (Blog & CMS)
 Artikel berfungsi sebagai media literasi gratis dan pendongkrak SEO LMS Anda. Ini bukan fitur sekunder sembarangan.
 - **Kebutuhan Database**: Tabel `articles` (slug, title, content, published_at), tabel `categories`, dan pivot `article_tag`.
 - **Kebutuhan Admin Panel**: Pembuatan form editor purna jual di Filament untuk mengunggah The *Thumbnail Image*, menulis konten dengan *Markdown Compiler* dan preview, beserta konfigurasi status (Draft/Publish).
 - **Kebutuhan Front-end**: Laman `/article` (Katalog Artikel dengan pemfilteran) dan `/article/{slug}` (Halaman baca memanjang dioptimasi Tailwind Typography).
 
-### Tahap 10: Sistem Algoritma Rekomendasi
+### Tahap 11: Sistem Algoritma Rekomendasi
 Menyajikan kursus yang sangat spesifik dan relevan kepada pengguna secara otomatis di dasbor *Recommended for You*.
 - **Kebutuhan Logic**: Mesin *Query* atau algoritma analitik yang mampu membaca jejak *Enrollments* siswa. Jika ia membeli kursus React, maka sodorkan tawaran kursus Next.js.
 - **Kebutuhan Front-end**: Blok statis diubah menjadi korsel (*carousel/slider*) dinamis yang berevolusi tiap pengguna menamatkan suatu modul.
 
-### Tahap 11: Arsitektur Learning Paths (Alur Karir Berjenjang)
+### Tahap 12: Arsitektur Learning Paths (Alur Karir Berjenjang)
 Mengkategorisasikan kursus satuan ke dalam lintasan spesialisasi karir secara komprehensif (contoh: *Front-End Engineer*, *Data Scientist*).
 - **Kebutuhan Database**: Hirarki bersarang tinggi. Tabel master `pathways` (nama karir, ikon) -> berelasi *One-to-Many* dengan tabel `pathway_levels` (menyimpan urutan level: Pemula, Menengah, Mahir) -> bertaut *Many-to-Many* dengan kursus di dalamnya.
 - **Kebutuhan Admin Panel**: Modul matriks purna-jual bersistem *Drag-and-Drop* di *Dashboard Admin* untuk mendesain *Skill Tree* hirarki karir berjenjang tersebut.
 - **Kebutuhan Front-end**: Laman penjelajah peta karir `/pathway` yang visualnya menyeramapai rute *game* atau *Skill Tree*.
 
-### Tahap 12: Arsitektur Langganan (Pricing & Subscription)
+### Tahap 13: Arsitektur Langganan (Pricing & Subscription)
 Alih-alih membeli kursus satu per satu, LMS harus di-skalakan agar memfasilitasi "Sistem Langganan Bulanan" bagai Netflix.
 - **Kebutuhan Database**: Penambahan lapisan pada `users` (seperti struktur langganan Cashier: `subscription_status`, `trial_ends_at`). Tabel rekap `subscription_plans`.
 - **Kebutuhan Payment Gateway**: Mengintegrasikan sistem *Recurring Billing* pada Midtrans/Stripe khusus perputaran bulanan.
 - **Kebutuhan Logika Autentikasi**: *Middleware* baru (misal `EnsureSubscribed`) untuk mendepak paksa akses video ketika durasi penagihan belum dilunasi pada bulan tersebut.
 
-### Tahap 13: Mesin Gamifikasi & Pengelolaan Acara Jarak Jauh (Live Events)
+### Tahap 14: Mesin Gamifikasi & Pengelolaan Acara Jarak Jauh (Live Events)
 Menerapkan psikologi gamifikasi (*Achievements*) untuk mendongkrak retensi penyelesaian para siswa.
 - **Kebutuhan Skema Events**: Tabel `events` (tema, jadwal tayang, link Google Meet/Zoom, sisa kursi maksimal) -> Terhubung visualnya ke "Upcoming Events" Widget di Dasbor.
 - **Kebutuhan Skema Gamifikasi**: Tabel master `badges/achievements` vs pivot `achievement_user`.
