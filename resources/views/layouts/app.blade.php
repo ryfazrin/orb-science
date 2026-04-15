@@ -46,18 +46,52 @@
 
             <div class="flex items-center gap-4">
                 @auth
-                    <a href="/profile" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors">
-                        <i data-lucide="user" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Profile</span>
-                        <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black ml-1">Soon</span>
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-primary text-white shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
-                            <i data-lucide="log-out" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">Log Out</span>
+                    <!-- User Profile Dropdown -->
+                    <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                        <button @click="open = !open" class="flex items-center gap-2 px-3 py-1.5 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors outline-none focus:ring-2 focus:ring-primary/20">
+                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                                <span class="text-sm font-black">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                            </div>
+                            <span class="hidden sm:inline text-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]">{{ explode(' ', auth()->user()->name ?? 'User')[0] }}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
                         </button>
-                    </form>
+                        
+                        <div x-show="open" 
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             style="display: none;"
+                             class="absolute right-0 mt-3 w-52 bg-white border border-surface-container shadow-[0px_8px_32px_rgba(27,28,28,0.1)] rounded-2xl overflow-hidden py-2 z-50">
+                            
+                            <!-- Dropdown Header Info -->
+                            <div class="px-4 py-3 border-b border-surface-container bg-surface-container-low/50">
+                                <p class="text-sm font-bold text-on-surface truncate">{{ auth()->user()->name ?? 'User' }}</p>
+                                <p class="text-xs font-medium text-tertiary truncate">{{ auth()->user()->email ?? '' }}</p>
+                            </div>
+
+                            <!-- Links -->
+                            <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-tertiary hover:bg-surface-container-low hover:text-primary transition-colors">
+                                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dasbor Utama
+                            </a>
+                            
+                            <a href="/profile" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-tertiary hover:bg-surface-container-low hover:text-primary transition-colors">
+                                <i data-lucide="user" class="w-4 h-4"></i> Pengaturan Profil
+                            </a>
+                            
+                            <div class="h-[1px] w-full bg-surface-container my-1"></div>
+                            
+                            <!-- Logout -->
+                            <form method="POST" action="{{ route('logout') }}" class="w-full">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors">
+                                    <i data-lucide="log-out" class="w-4 h-4"></i> Keluar (Log Out)
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 @else
                     <a href="/login" class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-tertiary hover:bg-surface-container-low transition-colors">
                         <i data-lucide="log-in" class="w-[18px] h-[18px]"></i>
