@@ -30,4 +30,9 @@ class Course extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function lessons()
+    {
+        return $this->hasManyThrough(Lesson::class, Module::class);
+    }
 }
