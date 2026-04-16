@@ -56,7 +56,7 @@ Menyajikan kursus yang sangat spesifik dan relevan kepada pengguna secara otomat
 - **Kebutuhan Logic**: Mesin *Query* atau algoritma analitik yang mampu membaca jejak *Enrollments* siswa. Jika ia membeli kursus React, maka sodorkan tawaran kursus Next.js.
 - **Kebutuhan Front-end**: Blok statis diubah menjadi korsel (*carousel/slider*) dinamis yang berevolusi tiap pengguna menamatkan suatu modul.
 
-### Tahap 12: Arsitektur Learning Paths (Alur Karir Berjenjang)
+### (ON PROGRESS) Tahap 12: Arsitektur Learning Paths (Alur Karir Berjenjang)
 Mengkategorisasikan kursus satuan ke dalam lintasan spesialisasi karir secara komprehensif (contoh: *Front-End Engineer*, *Data Scientist*).
 - **Kebutuhan Database**: Hirarki bersarang tinggi. Tabel master `pathways` (nama karir, ikon) -> berelasi *One-to-Many* dengan tabel `pathway_levels` (menyimpan urutan level: Pemula, Menengah, Mahir) -> bertaut *Many-to-Many* dengan kursus di dalamnya.
 - **Kebutuhan Admin Panel**: Modul matriks purna-jual bersistem *Drag-and-Drop* di *Dashboard Admin* untuk mendesain *Skill Tree* hirarki karir berjenjang tersebut.

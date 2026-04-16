@@ -8,11 +8,13 @@ use App\Http\Controllers\LearningController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\PathwayController;
 
 // Public Pages
 Route::get('/', [PublicController::class, 'index']);
 Route::get('/catalog', [PublicController::class, 'catalog']);
-Route::get('/pathway', [PublicController::class, 'pathway']);
+Route::get('/pathway', [PathwayController::class, 'index']);
+Route::get('/pathway/{slug}', [PathwayController::class, 'show']);
 Route::get('/article/{id?}', [PublicController::class, 'article']);
 Route::get('/about', [PublicController::class, 'about']);
 Route::get('/support', [PublicController::class, 'support']);
