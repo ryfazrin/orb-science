@@ -60,30 +60,56 @@
             <section>
                 <h2 class="text-2xl font-black tracking-tight text-on-surface mb-6 flex items-center gap-3">
                     Recommended for You
-                    <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[10px] uppercase font-black border border-yellow-500/20">Coming Soon</span>
+                    @if($recommended->isNotEmpty())
+                    <span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] uppercase font-black border border-primary/20">
+                        {{ $recommended->count() }} Kursus
+                    </span>
+                    @endif
                 </h2>
+
+                @if($recommended->isEmpty())
+                <div class="p-8 rounded-3xl bg-surface-container-low border border-dashed border-surface-container-high text-center">
+                    <i data-lucide="sparkles" class="w-10 h-10 text-tertiary mx-auto mb-3 opacity-40"></i>
+                    <p class="font-bold text-on-surface">Belum ada rekomendasi</p>
+                    <p class="text-sm text-tertiary mt-1">Mulai kursus pertama Anda, kami akan merekomendasikan kursus yang relevan!</p>
+                    <a href="/catalog" class="inline-block mt-4 px-6 py-2.5 bg-primary text-white font-black text-sm rounded-full hover:scale-105 transition-all">
+                        Jelajahi Kursus
+                    </a>
+                </div>
+                @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    @foreach([1, 2] as $i)
-                    <div class="p-6 rounded-3xl bg-surface-container-low border border-surface-container-high hover:tonal-lift transition-all">
+                    @foreach($recommended as $course)
+                    <a href="/course/{{ $course->id }}"
+                       class="group flex flex-col p-6 rounded-3xl bg-surface-container-low border border-surface-container-high hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all">
                         <div class="w-full aspect-video rounded-2xl bg-surface-container-high mb-4 overflow-hidden">
-                            <img 
-                                src="https://picsum.photos/seed/rec{{ $i }}/600/400" 
-                                alt="Recommended" 
-                                class="w-full h-full object-cover"
+                            <img
+                                src="{{ $course->thumbnail_url ?? 'https://picsum.photos/seed/course'.$course->id.'/600/400' }}"
+                                alt="{{ $course->title }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 referrerpolicy="no-referrer"
                             />
                         </div>
-                        <h3 class="text-lg font-black tracking-tight text-on-surface mb-2">System Design Interview Guide</h3>
-                        <p class="text-sm text-tertiary mb-4">Master the art of scaling applications for millions of users.</p>
-                        <a 
-                            href="/course/1"
-                            class="text-primary font-bold text-sm hover:underline"
-                        >
-                            View Details
-                        </a>
-                    </div>
+                        <div class="flex-grow">
+                            <h3 class="text-base font-black tracking-tight text-on-surface group-hover:text-primary transition-colors mb-2 leading-snug">
+                                {{ $course->title }}
+                            </h3>
+                            @if($course->description ?? null)
+                            <p class="text-sm text-tertiary mb-3 line-clamp-2">{{ Str::limit($course->description, 80) }}</p>
+                            @endif
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-surface-container-high mt-3">
+                            <span class="text-xs font-bold text-tertiary flex items-center gap-1">
+                                <i data-lucide="users" class="w-3 h-3"></i>
+                                {{ number_format($course->enrollments_count ?? $course->enrollments()->count()) }} siswa
+                            </span>
+                            <span class="text-xs font-black text-primary flex items-center gap-1">
+                                Lihat Detail <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                            </span>
+                        </div>
+                    </a>
                     @endforeach
                 </div>
+                @endif
             </section>
         </div>
 

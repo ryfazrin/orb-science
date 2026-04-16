@@ -51,7 +51,7 @@ Artikel berfungsi sebagai media literasi gratis dan pendongkrak SEO LMS Anda. In
 - **Kebutuhan Admin Panel**: Pembuatan form editor purna jual di Filament untuk mengunggah The *Thumbnail Image*, menulis konten dengan *Markdown Compiler* dan preview, beserta konfigurasi status (Draft/Publish).
 - **Kebutuhan Front-end**: Laman `/article` (Katalog Artikel dengan pemfilteran) dan `/article/{slug}` (Halaman baca memanjang dioptimasi Tailwind Typography).
 
-### Tahap 11: Sistem Algoritma Rekomendasi
+### ✅ Tahap 11: Sistem Algoritma Rekomendasi
 Menyajikan kursus yang sangat spesifik dan relevan kepada pengguna secara otomatis di dasbor *Recommended for You*.
 - **Kebutuhan Logic**: Mesin *Query* atau algoritma analitik yang mampu membaca jejak *Enrollments* siswa. Jika ia membeli kursus React, maka sodorkan tawaran kursus Next.js.
 - **Kebutuhan Front-end**: Blok statis diubah menjadi korsel (*carousel/slider*) dinamis yang berevolusi tiap pengguna menamatkan suatu modul.
