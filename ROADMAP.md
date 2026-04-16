@@ -45,7 +45,7 @@ Sebagai respon dari kebutuhan evaluasi siswa sebelum dinyatakan lulus kursus.
 - **Tugas Utama**: Dinamisasi ganti foto profil, ganti _password_, manajemen preferensi User.
 - Meluncurkan fitur Generator PDF (misal memakai `spatie/laravel-pdf`) ketika Kursus = 100%, sehingga tombol *View Certificate* dapat mengunduh dokumen secara sah.
 
-### Tahap 10: Sistem Artikel (Blog & CMS)
+### ✅ Tahap 10: Sistem Artikel (Blog & CMS)
 Artikel berfungsi sebagai media literasi gratis dan pendongkrak SEO LMS Anda. Ini bukan fitur sekunder sembarangan.
 - **Kebutuhan Database**: Tabel `articles` (slug, title, content, published_at), tabel `categories`, dan pivot `article_tag`.
 - **Kebutuhan Admin Panel**: Pembuatan form editor purna jual di Filament untuk mengunggah The *Thumbnail Image*, menulis konten dengan *Markdown Compiler* dan preview, beserta konfigurasi status (Draft/Publish).
@@ -56,13 +56,13 @@ Menyajikan kursus yang sangat spesifik dan relevan kepada pengguna secara otomat
 - **Kebutuhan Logic**: Mesin *Query* atau algoritma analitik yang mampu membaca jejak *Enrollments* siswa. Jika ia membeli kursus React, maka sodorkan tawaran kursus Next.js.
 - **Kebutuhan Front-end**: Blok statis diubah menjadi korsel (*carousel/slider*) dinamis yang berevolusi tiap pengguna menamatkan suatu modul.
 
-### (ON PROGRESS) Tahap 12: Arsitektur Learning Paths (Alur Karir Berjenjang)
+### ✅ Tahap 12: Arsitektur Learning Paths (Alur Karir Berjenjang)
 Mengkategorisasikan kursus satuan ke dalam lintasan spesialisasi karir secara komprehensif (contoh: *Front-End Engineer*, *Data Scientist*).
 - **Kebutuhan Database**: Hirarki bersarang tinggi. Tabel master `pathways` (nama karir, ikon) -> berelasi *One-to-Many* dengan tabel `pathway_levels` (menyimpan urutan level: Pemula, Menengah, Mahir) -> bertaut *Many-to-Many* dengan kursus di dalamnya.
 - **Kebutuhan Admin Panel**: Modul matriks purna-jual bersistem *Drag-and-Drop* di *Dashboard Admin* untuk mendesain *Skill Tree* hirarki karir berjenjang tersebut.
 - **Kebutuhan Front-end**: Laman penjelajah peta karir `/pathway` yang visualnya menyeramapai rute *game* atau *Skill Tree*.
 
-### Tahap 13: Arsitektur Langganan (Pricing & Subscription)
+### (HOLD) Tahap 13: Arsitektur Langganan (Pricing & Subscription)
 Alih-alih membeli kursus satu per satu, LMS harus di-skalakan agar memfasilitasi "Sistem Langganan Bulanan" bagai Netflix.
 - **Kebutuhan Database**: Penambahan lapisan pada `users` (seperti struktur langganan Cashier: `subscription_status`, `trial_ends_at`). Tabel rekap `subscription_plans`.
 - **Kebutuhan Payment Gateway**: Mengintegrasikan sistem *Recurring Billing* pada Midtrans/Stripe khusus perputaran bulanan.

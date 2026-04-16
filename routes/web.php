@@ -9,13 +9,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PathwayController;
+use App\Http\Controllers\ArticleController;
 
 // Public Pages
 Route::get('/', [PublicController::class, 'index']);
 Route::get('/catalog', [PublicController::class, 'catalog']);
 Route::get('/pathway', [PathwayController::class, 'index']);
 Route::get('/pathway/{slug}', [PathwayController::class, 'show']);
-Route::get('/article/{id?}', [PublicController::class, 'article']);
+Route::get('/article', [ArticleController::class, 'index']);
+Route::get('/article/{slug}', [ArticleController::class, 'show']);
 Route::get('/about', [PublicController::class, 'about']);
 Route::get('/support', [PublicController::class, 'support']);
 Route::get('/pricing', [PublicController::class, 'pricing']);

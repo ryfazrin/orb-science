@@ -37,7 +37,7 @@
                     Pathway
                 </a>
                 <a href="/article" class="flex items-center text-sm font-semibold tracking-tight transition-colors {{ Request::is('article*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
-                    Articles <span class="ml-2 flex items-center px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black">Soon</span>
+                    Articles
                 </a>
                 <a href="/pricing" class="flex items-center text-sm font-semibold tracking-tight transition-colors {{ Request::is('pricing*') ? 'text-primary' : 'text-tertiary hover:text-on-surface' }}">
                     Pricing <span class="ml-2 flex items-center px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-600 text-[9px] uppercase font-black">Soon</span>
