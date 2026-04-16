@@ -40,6 +40,13 @@ class LessonResource extends Resource
                 Forms\Components\TextInput::make('duration_minutes')
                     ->required()
                     ->numeric(),
+                Forms\Components\TextInput::make('time_limit_minutes')
+                    ->label('Batas Waktu Kuis (menit)')
+                    ->numeric()
+                    ->minValue(1)
+                    ->placeholder('cth: 30')
+                    ->helperText('Isi hanya jika tipe adalah Quiz. Siswa akan auto-submit saat waktu habis.')
+                    ->visible(fn ($get) => $get('type') === 'quiz'),
                 Forms\Components\Tabs::make('Content Tabs')
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Editor Mode')

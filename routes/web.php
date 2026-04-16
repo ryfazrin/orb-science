@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LearningController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ExamController;
 
 // Public Pages
 Route::get('/', [PublicController::class, 'index']);
@@ -33,6 +34,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/course/{course_id}/learn/{lesson_id}', [LearningController::class, 'show'])->name('course.learn');
     Route::post('/course/{course_id}/learn/{lesson_id}/complete', [LearningController::class, 'complete'])->name('course.lesson.complete');
     Route::post('/course/{course_id}/learn/{lesson_id}/quiz', [LearningController::class, 'submitQuiz'])->name('course.lesson.quiz.submit');
+
+    // Exam / Quiz Standalone Page
+    Route::get('/course/{course_id}/exam/{lesson_id}', [ExamController::class, 'show'])->name('course.exam.show');
+    Route::post('/course/{course_id}/exam/{lesson_id}/submit', [ExamController::class, 'submit'])->name('course.exam.submit');
 });
 
 // Profile Routes provided by Breeze

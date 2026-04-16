@@ -39,15 +39,26 @@ class LearningController extends Controller
         
         $progressPercent = $totalLessons > 0 ? ceil(($completedLessonsCount / $totalLessons) * 100) : 0;
 
-        $quizResult = null;
+        $quizResult    = null;
+        $quizHistories = collect();
         if ($currentLesson->type === 'quiz') {
-            $currentLesson->load('questions.options');
+            $currentLesson->load('questions');
             $quizResult = \App\Models\UserQuizResult::where('user_id', $userId)
-                             ->where('lesson_id', $currentLesson->id)
-                             ->first();
+                ->where('lesson_id', $currentLesson->id)
+                ->where('passed', true)
+                ->first();
+            $quizHistories = \App\Models\UserQuizResult::where('user_id', $userId)
+                ->where('lesson_id', $currentLesson->id)
+                ->whereNotNull('score')
+                ->orderByDesc('attempt_number')
+                ->get();
         }
 
-        return view('pages.lesson', compact('course', 'currentLesson', 'prevLesson', 'nextLesson', 'progressPercent', 'totalLessons', 'completedLessonsCount', 'completedLessonIds', 'quizResult'));
+        return view('pages.lesson', compact(
+            'course', 'currentLesson', 'prevLesson', 'nextLesson',
+            'progressPercent', 'totalLessons', 'completedLessonsCount',
+            'completedLessonIds', 'quizResult', 'quizHistories'
+        ));
     }
 
     public function complete(Request $request, $course_id, $lesson_id)

@@ -16,16 +16,108 @@
             </nav>
 
             <article>
-                @if($currentLesson->type === 'quiz')
-                    @include('components.quiz-engine', ['lesson' => $currentLesson])
-                @else
-                    <div class="prose prose-lg max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-pre:bg-surface-container-lowest prose-pre:text-on-surface prose-pre:border prose-pre:border-surface-container-high prose-pre:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-l-primary prose-blockquote:bg-surface-container-high/30 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:text-on-surface prose-img:rounded-3xl prose-img:shadow-xl text-on-surface/90 leading-relaxed mb-12">
-                        <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-on-surface leading-[0.9] !mb-12">
-                            {{ $currentLesson->title }}
-                        </h1>
+                <div class="prose prose-lg max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-pre:bg-surface-container-lowest prose-pre:text-on-surface prose-pre:border prose-pre:border-surface-container-high prose-pre:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-l-primary prose-blockquote:bg-surface-container-high/30 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:text-on-surface prose-img:rounded-3xl prose-img:shadow-xl text-on-surface/90 leading-relaxed mb-12">
+                    <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-on-surface leading-[0.9] !mb-12">
+                        {{ $currentLesson->title }}
+                    </h1>
+                    {!! Str::markdown($currentLesson->content ?? '*No content available for this lesson.*') !!}
+                </div>
 
-                        {!! Str::markdown($currentLesson->content ?? '*No content available for this lesson.*') !!}
+                @if($currentLesson->type === 'quiz')
+                {{-- === QUIZ BLOCK === --}}
+                <div class="mt-4 mb-12">
+                    {{-- Notifikasi Hasil Kuis (Dari Session Setelah Submit) --}}
+                    @if(session('quiz_score') !== null)
+                    <div class="mb-6 p-6 rounded-2xl flex items-center gap-5 {{ session('quiz_passed') ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20' }}">
+                        <div class="w-16 h-16 rounded-full shrink-0 flex items-center justify-center font-black text-xl {{ session('quiz_passed') ? 'bg-green-500 text-white shadow-lg shadow-green-500/30' : 'bg-red-500 text-white shadow-lg shadow-red-500/30' }}">
+                            {{ session('quiz_score') }}
+                        </div>
+                        <div>
+                            <div class="font-black text-lg {{ session('quiz_passed') ? 'text-green-600' : 'text-red-600' }}">
+                                {{ session('quiz_passed') ? '🎉 Selamat! Anda Lulus!' : '😔 Belum Mencapai KKM (75)' }}
+                            </div>
+                            <p class="text-sm text-on-surface/70 mt-0.5">
+                                {{ session('quiz_timeout') ? 'Waktu habis, kuis otomatis dikumpulkan.' : (session('quiz_passed') ? 'Pelajaran ini telah otomatis diselesaikan.' : 'Anda dapat mencoba kembali.') }}
+                            </p>
+                        </div>
                     </div>
+                    @endif
+
+                    {{-- Status Kelulusan --}}
+                    @if($quizResult && $quizResult->passed)
+                    <div class="mb-6 p-4 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center gap-3">
+                        <i data-lucide="check-circle" class="text-green-500 w-5 h-5 shrink-0"></i>
+                        <span class="font-bold text-green-700">Anda telah lulus kuis ini.</span>
+                    </div>
+                    @endif
+
+                    {{-- Tombol Mulai Kuis --}}
+                    <div class="p-8 rounded-3xl border border-surface-container-high bg-surface-container-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                        <div>
+                            <div class="font-black text-2xl tracking-tighter text-on-surface mb-1">Ujian Materi</div>
+                            <div class="text-sm text-tertiary flex items-center gap-4">
+                                <span class="flex items-center gap-1.5"><i data-lucide="list-ordered" class="w-3.5 h-3.5"></i> {{ $currentLesson->questions->count() }} Soal</span>
+                                <span class="flex items-center gap-1.5"><i data-lucide="timer" class="w-3.5 h-3.5"></i> {{ $currentLesson->time_limit_minutes ?? 30 }} Menit</span>
+                                <span class="flex items-center gap-1.5"><i data-lucide="percent" class="w-3.5 h-3.5"></i> KKM 75</span>
+                            </div>
+                        </div>
+                        @if(!($quizResult && $quizResult->passed))
+                        <a href="{{ route('course.exam.show', [$course->id, $currentLesson->id]) }}"
+                           class="shrink-0 flex items-center gap-2 px-8 py-3.5 rounded-full bg-primary text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            Mulai Kuis
+                        </a>
+                        @else
+                        <a href="{{ route('course.exam.show', [$course->id, $currentLesson->id]) }}"
+                           class="shrink-0 flex items-center gap-2 px-8 py-3.5 rounded-full border border-surface-container-high text-tertiary font-black uppercase tracking-widest text-xs hover:bg-surface-container-high transition-all">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                            Coba Lagi
+                        </a>
+                        @endif
+                    </div>
+
+                    {{-- Histori Nilai --}}
+                    @if($quizHistories->isNotEmpty())
+                    <div class="mt-8">
+                        <h3 class="font-black tracking-tight text-on-surface mb-4">Riwayat Percobaan</h3>
+                        <div class="rounded-2xl overflow-hidden border border-surface-container-high">
+                            <table class="w-full text-sm">
+                                <thead class="bg-surface-container-high/60">
+                                    <tr>
+                                        <th class="text-left px-5 py-3 font-black text-xs uppercase tracking-widest text-tertiary">Percobaan</th>
+                                        <th class="text-left px-5 py-3 font-black text-xs uppercase tracking-widest text-tertiary">Skor</th>
+                                        <th class="text-left px-5 py-3 font-black text-xs uppercase tracking-widest text-tertiary">Status</th>
+                                        <th class="text-left px-5 py-3 font-black text-xs uppercase tracking-widest text-tertiary">Tanggal</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-container-high">
+                                    @foreach($quizHistories as $history)
+                                    <tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+                                        <td class="px-5 py-3 font-bold">#{{ $history->attempt_number }}</td>
+                                        <td class="px-5 py-3">
+                                            <span class="font-black text-base {{ $history->passed ? 'text-green-600' : 'text-red-500' }}">{{ $history->score }}</span>
+                                            <span class="text-tertiary">/100</span>
+                                        </td>
+                                        <td class="px-5 py-3">
+                                            @if($history->passed)
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                                                <i data-lucide="check" class="w-3 h-3"></i> Lulus
+                                            </span>
+                                            @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-600 text-xs font-bold">
+                                                <i data-lucide="x" class="w-3 h-3"></i> Belum Lulus
+                                            </span>
+                                            @endif
+                                        </td>
+                                        <td class="px-5 py-3 text-tertiary">{{ $history->created_at?->format('d M Y, H:i') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+                </div>
                 @endif
             </article>
         </div>
