@@ -16,13 +16,17 @@
             </nav>
 
             <article>
-                <div class="prose prose-lg max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-pre:bg-surface-container-lowest prose-pre:text-on-surface prose-pre:border prose-pre:border-surface-container-high prose-pre:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-l-primary prose-blockquote:bg-surface-container-high/30 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:text-on-surface prose-img:rounded-3xl prose-img:shadow-xl text-on-surface/90 leading-relaxed mb-12">
-                    <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-on-surface leading-[0.9] !mb-12">
-                        {{ $currentLesson->title }}
-                    </h1>
+                @if($currentLesson->type === 'quiz')
+                    @include('components.quiz-engine', ['lesson' => $currentLesson])
+                @else
+                    <div class="prose prose-lg max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-pre:bg-surface-container-lowest prose-pre:text-on-surface prose-pre:border prose-pre:border-surface-container-high prose-pre:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-l-primary prose-blockquote:bg-surface-container-high/30 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:text-on-surface prose-img:rounded-3xl prose-img:shadow-xl text-on-surface/90 leading-relaxed mb-12">
+                        <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-on-surface leading-[0.9] !mb-12">
+                            {{ $currentLesson->title }}
+                        </h1>
 
-                    {!! Str::markdown($currentLesson->content ?? '*No content available for this lesson.*') !!}
-                </div>
+                        {!! Str::markdown($currentLesson->content ?? '*No content available for this lesson.*') !!}
+                    </div>
+                @endif
             </article>
         </div>
     </div>
@@ -119,6 +123,12 @@
                 <button type="submit" disabled class="flex items-center gap-2 px-8 py-3 rounded-full bg-green-500 text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-green-500/20 opacity-80 cursor-default">
                     <i data-lucide="check-circle" class="w-4 h-4"></i>
                     Completed
+                </button>
+                @elseif($currentLesson->type === 'quiz')
+                <!-- Tahan tombol complete untuk Quiz, user dipaksa submit kuis untuk menyelesaikannya! -->
+                <button type="button" disabled class="flex items-center gap-2 px-8 py-3 rounded-full border border-surface-container-high text-tertiary font-black uppercase tracking-widest text-xs opacity-70 cursor-not-allowed">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                    Pass Quiz to Complete
                 </button>
                 @else
                 <button type="submit" class="flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">

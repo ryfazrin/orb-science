@@ -39,7 +39,15 @@ class LearningController extends Controller
         
         $progressPercent = $totalLessons > 0 ? ceil(($completedLessonsCount / $totalLessons) * 100) : 0;
 
-        return view('pages.lesson', compact('course', 'currentLesson', 'prevLesson', 'nextLesson', 'progressPercent', 'totalLessons', 'completedLessonsCount', 'completedLessonIds'));
+        $quizResult = null;
+        if ($currentLesson->type === 'quiz') {
+            $currentLesson->load('questions.options');
+            $quizResult = \App\Models\UserQuizResult::where('user_id', $userId)
+                             ->where('lesson_id', $currentLesson->id)
+                             ->first();
+        }
+
+        return view('pages.lesson', compact('course', 'currentLesson', 'prevLesson', 'nextLesson', 'progressPercent', 'totalLessons', 'completedLessonsCount', 'completedLessonIds', 'quizResult'));
     }
 
     public function complete(Request $request, $course_id, $lesson_id)
@@ -81,5 +89,58 @@ class LearningController extends Controller
         }
 
         return redirect("/dashboard");
+    }
+
+    public function submitQuiz(Request $request, $course_id, $lesson_id)
+    {
+        $userId = auth()->id();
+        $lesson = Lesson::with('questions.options')->findOrFail($lesson_id);
+        
+        $answers = $request->input('answers', []);
+        $totalPoints = 0;
+        $earnedPoints = 0;
+
+        foreach ($lesson->questions as $question) {
+            $totalPoints += $question->points;
+            $selectedOptionId = $answers[$question->id] ?? null;
+            if ($selectedOptionId) {
+                $option = $question->options->where('id', $selectedOptionId)->first();
+                if ($option && $option->is_correct) {
+                    $earnedPoints += $question->points;
+                }
+            }
+        }
+
+        $score = $totalPoints > 0 ? ceil(($earnedPoints / $totalPoints) * 100) : 0;
+        $passed = $score >= 75; // Minimal Kelulusan
+
+        \App\Models\UserQuizResult::updateOrCreate(
+            ['user_id' => $userId, 'lesson_id' => $lesson_id],
+            ['score' => $score, 'passed' => $passed]
+        );
+
+        // Langsung tamatkan Bab/Lesson ini secara paksa bila Lulus (Merahasiakan detail ke student)
+        if ($passed) {
+            $user = \App\Models\User::find($userId);
+            $user->completedLessons()->syncWithoutDetaching([$lesson_id]);
+            
+            $course = Course::with(['modules.lessons'])->findOrFail($course_id);
+            $enrollment = Enrollment::where('user_id', $userId)->where('course_id', $course_id)->first();
+            
+            if ($enrollment) {
+                $allLessons = $course->modules->flatMap->lessons->values();
+                $courseLessonIds = $allLessons->pluck('id')->toArray();
+                $completedCount = $user->completedLessons()->whereIn('lesson_id', $courseLessonIds)->count();
+                $totalLessons = count($courseLessonIds) ?: 1;
+                
+                $newProgress = ceil(($completedCount / $totalLessons) * 100);
+                $enrollment->update([
+                    'last_accessed_at' => now(),
+                    'status' => $newProgress >= 100 ? 'completed' : 'active'
+                ]);
+            }
+        }
+
+        return back()->with('quiz_score', $score)->with('quiz_passed', $passed);
     }
 }

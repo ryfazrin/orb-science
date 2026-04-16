@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Learning Experience (The Lesson Player Workspace)
     Route::get('/course/{course_id}/learn/{lesson_id}', [LearningController::class, 'show'])->name('course.learn');
     Route::post('/course/{course_id}/learn/{lesson_id}/complete', [LearningController::class, 'complete'])->name('course.lesson.complete');
+    Route::post('/course/{course_id}/learn/{lesson_id}/quiz', [LearningController::class, 'submitQuiz'])->name('course.lesson.quiz.submit');
 });
 
 // Profile Routes provided by Breeze

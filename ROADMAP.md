@@ -23,7 +23,7 @@ LMS tidak lengkap tanpa dasbor untuk Pembuat Konten/Tutor, karena memodifikasi k
 - **Teknologi**: Rekomendasi terkuat menggunakan **Filament PHP** panel. Sangat cepat, modern, dan sejalur dengan ekosistem Laravel Tailwiind.
 - **Tugas Utama**: Membuat CRUD Resources untuk tabel `Courses`, `Modules`, `Lessons`. Termasuk kolom pengisi konten berformat Markdown dan KaTeX.
 
-### Tahap 6: Analisis Dasbor Admin (Dashboard Analytics)
+### ✅ Tahap 6: Analisis Dasbor Admin (Dashboard Analytics)
 Melengkapi Panel Admin (Filament) dengan Widget Statistik dan Chart untuk memantau performa proyek E-Learning.
 - **Kebutuhan Fitur**: *Stats Overview Widget* (Pemantau Total Kursus, Total Siswa, Penjualan). Grafik Pendaftaran/Penyelesaian (Chart Widget).
 - **Target Capaian**: Visibilitas data performa bisnis secara *real-time* ketika instruktur baru saja masuk *_login_* ke Dasbor Admin.

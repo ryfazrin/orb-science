@@ -20,4 +20,14 @@ class Lesson extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    public function userQuizResults()
+    {
+        return $this->hasMany(UserQuizResult::class);
+    }
 }
