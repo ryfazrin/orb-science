@@ -3,40 +3,60 @@
 @section('content')
 <div class="flex min-h-[calc(100vh-5rem)] bg-surface relative"
      x-data="{
-        currentQ:    0,
-        answers:     {},
-        totalQ:      {{ $lesson->questions->count() }},
-        timeLeft:    {{ $remainingSeconds }},
-        timerStr:    '',
-        storageKey:  'exam_answers_{{ $attempt->id }}',
+        currentQ:     0,
+        answers:      {},
+        totalQ:       {{ $lesson->questions->count() }},
+        timeLeft:     0,
+        timerStr:     '--:--',
+        intervalId:   null,
+        deadlineKey:  'exam_deadline_{{ $attempt->id }}',
+        storageKey:   'exam_answers_{{ $attempt->id }}',
+        serverRemaining: {{ $remainingSeconds }},
         init() {
-            // Load jawaban yang sudah disimpan sebelumnya
+            // === LOAD JAWABAN ===
             const saved = localStorage.getItem(this.storageKey);
             if (saved) {
                 try { this.answers = JSON.parse(saved); } catch(e) {}
             }
-            // Watch perubahan answers & simpan otomatis
             this.$watch('answers', (val) => {
                 localStorage.setItem(this.storageKey, JSON.stringify(val));
             });
-            this.tickTimer();
-            setInterval(() => this.tickTimer(), 1000);
+
+            // === SETUP DEADLINE (fixed timestamp, tidak berubah saat refresh) ===
+            let deadline = localStorage.getItem(this.deadlineKey);
+            if (!deadline) {
+                // Pertama kali buka: hitung deadline dari server remaining
+                deadline = Date.now() + (this.serverRemaining * 1000);
+                localStorage.setItem(this.deadlineKey, deadline);
+            } else {
+                deadline = parseInt(deadline);
+            }
+
+            // === TICK TIMER (hanya satu interval) ===
+            const tick = () => {
+                const remaining = Math.floor((deadline - Date.now()) / 1000);
+                this.timeLeft = remaining;
+                if (remaining <= 0) {
+                    this.timerStr = '00:00';
+                    clearInterval(this.intervalId);
+                    localStorage.removeItem(this.storageKey);
+                    localStorage.removeItem(this.deadlineKey);
+                    this.$refs.examForm.submit();
+                    return;
+                }
+                const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+                const s = String(remaining % 60).padStart(2, '0');
+                this.timerStr = m + ':' + s;
+            };
+
+            tick(); // render langsung tanpa delay
+            this.intervalId = setInterval(tick, 1000);
         },
         clearAndSubmit() {
-            // Hapus cache sebelum submit agar attempt baru mulai fresh
+            clearInterval(this.intervalId);
             localStorage.removeItem(this.storageKey);
+            localStorage.removeItem(this.deadlineKey);
             this.$refs.examForm.submit();
-        },
-        tickTimer() {
-            if (this.timeLeft <= 0) {
-                localStorage.removeItem(this.storageKey);
-                this.$refs.examForm.submit();
-                return;
-            }
-            const m = String(Math.floor(this.timeLeft / 60)).padStart(2, '0');
-            const s = String(this.timeLeft % 60).padStart(2, '0');
-            this.timerStr = m + ':' + s;
-            this.timeLeft--;
         },
         isAnswered(index) {
             const questions = {{ Js::from($lesson->questions->pluck('id')) }};
