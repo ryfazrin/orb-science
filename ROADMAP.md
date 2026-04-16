@@ -33,7 +33,7 @@ Menerima uang ke rekening platform secara valid.
 - **Teknologi**: Midtrans Snap API (Ideal untuk lokalisasi Rupiah) / Stripe.
 - **Tugas Utama**: Sistem simulasi akan dilepas. Menangani Webhook Midtrans. Apabila balasan Server adalah HTTP 200 (Success), barulah model `Enrollment` dibuat dan membuka pintu gerbang belajar bagi siswa yang membayar.
 
-### Tahap 8: Mesin Ujian (Exam/Quiz Engine)
+### ✅ Tahap 8: Mesin Ujian (Exam/Quiz Engine)
 Sebagai respon dari kebutuhan evaluasi siswa sebelum dinyatakan lulus kursus.
 - **Konsep**: Membuat tipe Sub-Bab khusus (Lesson dengan `type='quiz'`).
 - **Tugas Utama**: 
@@ -41,7 +41,7 @@ Sebagai respon dari kebutuhan evaluasi siswa sebelum dinyatakan lulus kursus.
   - Pembangunan Database baru: `questions`, `options`, dan `user_answers`. 
   - Sistem penilaian _(Grading Logic)_. Mengharuskan skor lolos > 75% untuk bisa mengubah status _Mark as Complete_.
 
-### Tahap 9: Finishing & Polishing (User Profile & Sertifikat)
+### ✅ Tahap 9: Finishing & Polishing (User Profile & Sertifikat)
 - **Tugas Utama**: Dinamisasi ganti foto profil, ganti _password_, manajemen preferensi User.
 - Meluncurkan fitur Generator PDF (misal memakai `spatie/laravel-pdf`) ketika Kursus = 100%, sehingga tombol *View Certificate* dapat mengunduh dokumen secara sah.
 
@@ -68,7 +68,7 @@ Alih-alih membeli kursus satu per satu, LMS harus di-skalakan agar memfasilitasi
 - **Kebutuhan Payment Gateway**: Mengintegrasikan sistem *Recurring Billing* pada Midtrans/Stripe khusus perputaran bulanan.
 - **Kebutuhan Logika Autentikasi**: *Middleware* baru (misal `EnsureSubscribed`) untuk mendepak paksa akses video ketika durasi penagihan belum dilunasi pada bulan tersebut.
 
-### Tahap 14: Mesin Gamifikasi & Pengelolaan Acara Jarak Jauh (Live Events)
+### (HOLD) Tahap 14: Mesin Gamifikasi & Pengelolaan Acara Jarak Jauh (Live Events)
 Menerapkan psikologi gamifikasi (*Achievements*) untuk mendongkrak retensi penyelesaian para siswa.
 - **Kebutuhan Skema Events**: Tabel `events` (tema, jadwal tayang, link Google Meet/Zoom, sisa kursi maksimal) -> Terhubung visualnya ke "Upcoming Events" Widget di Dasbor.
 - **Kebutuhan Skema Gamifikasi**: Tabel master `badges/achievements` vs pivot `achievement_user`.

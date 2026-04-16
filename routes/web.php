@@ -40,11 +40,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/course/{course_id}/exam/{lesson_id}/submit', [ExamController::class, 'submit'])->name('course.exam.submit');
 });
 
-// Profile Routes provided by Breeze
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/course/{id}/certificate', [ProfileController::class, 'certificate'])->name('course.certificate');
 });
 
 // Auth Scaffolding routes from Breeze
