@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticleResource\Pages;
+use App\Models\AdminAccessSetting;
 use App\Models\Article;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,9 +15,18 @@ use Illuminate\Support\Str;
 class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    protected static ?string $navigationIcon  = 'heroicon-o-newspaper';
     protected static ?string $navigationLabel = 'Artikel';
-    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationGroup = 'Blog';
+    protected static ?int    $navigationSort  = 1;
+
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        if ($user->isAdmin()) return true;
+        return AdminAccessSetting::isVisible(static::class, $user->role);
+    }
 
     public static function form(Form $form): Form
     {

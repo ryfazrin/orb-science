@@ -16,7 +16,9 @@ class StatsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $totalStudents = User::where('role', 'student')->count();
+        $totalStudents = User::whereHas('role', function ($query) {
+            $query->where('key', 'student');
+        })->count();
         $totalCourses = Course::count();
         
         // Perkiraan Revenue (Menjumlahkan harga kursus dari semua pendaftar)

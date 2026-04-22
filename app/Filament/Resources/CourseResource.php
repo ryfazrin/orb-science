@@ -4,21 +4,29 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
+use App\Models\AdminAccessSetting;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon  = 'heroicon-o-play-circle';
+    protected static ?string $navigationLabel = 'Courses';
+    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?int    $navigationSort  = 1;
 
-    protected static ?int $navigationSort = 1;
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        if ($user->isAdmin()) return true;
+        return AdminAccessSetting::isVisible(static::class, $user->role);
+    }
 
     public static function form(Form $form): Form
     {

@@ -15,13 +15,45 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Create a Test Student User
-        $student = User::factory()->create([
-            'name' => 'Demo Student',
-            'email' => 'student@ilmukomputer.com',
+        // 0. Create Default Roles
+        \App\Models\Role::firstOrCreate(['key' => 'admin'], [
+            'name'             => 'Admin',
+            'has_admin_access' => true,
+        ]);
+        \App\Models\Role::firstOrCreate(['key' => 'instructor'], [
+            'name'             => 'Instructor',
+            'has_admin_access' => true,
+        ]);
+        \App\Models\Role::firstOrCreate(['key' => 'student'], [
+            'name'             => 'Student',
+            'has_admin_access' => false,
+        ]);
+
+        // 1. Create Super Admin
+        User::factory()->create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@ilmukomputer.com',
             'password' => bcrypt('password'),
-            'bio' => 'I love learning new things.',
-            'role' => 'student'
+            'bio'      => 'Platform administrator.',
+            'role_id'  => \App\Models\Role::where('key', 'admin')->first()->id,
+        ]);
+
+        // 2. Create Test Instructor User
+        User::factory()->create([
+            'name'     => 'Demo Instructor',
+            'email'    => 'instructor@ilmukomputer.com',
+            'password' => bcrypt('password'),
+            'bio'      => 'Experienced software engineer and educator.',
+            'role_id'  => \App\Models\Role::where('key', 'instructor')->first()->id,
+        ]);
+
+        // 3. Create a Test Student User
+        $student = User::factory()->create([
+            'name'     => 'Demo Student',
+            'email'    => 'student@ilmukomputer.com',
+            'password' => bcrypt('password'),
+            'bio'      => 'I love learning new things.',
+            'role_id'  => \App\Models\Role::where('key', 'student')->first()->id,
         ]);
 
         // 2. Create Instructors

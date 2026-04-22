@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PathwayResource\Pages;
 use App\Filament\Resources\PathwayResource\RelationManagers;
+use App\Models\AdminAccessSetting;
 use App\Models\Pathway;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,9 +16,18 @@ use Illuminate\Support\Str;
 class PathwayResource extends Resource
 {
     protected static ?string $model = Pathway::class;
-    protected static ?string $navigationIcon = 'heroicon-o-map';
+    protected static ?string $navigationIcon  = 'heroicon-o-map';
     protected static ?string $navigationLabel = 'Learning Paths';
-    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationGroup = 'Learning Paths';
+    protected static ?int    $navigationSort  = 1;
+
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        if ($user->isAdmin()) return true;
+        return AdminAccessSetting::isVisible(static::class, $user->role);
+    }
 
     public static function form(Form $form): Form
     {
