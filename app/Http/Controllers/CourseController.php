@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -15,6 +16,19 @@ class CourseController extends Controller
         $totalLessons = $course->modules->flatMap->lessons->count();
         $totalDuration = $course->modules->flatMap->lessons->sum('duration_minutes');
         
-        return view('pages.course-detail', compact('course', 'totalLessons', 'totalDuration'));
+        // Determine if current user is enrolled (move logic out of view)
+        $isEnrolled = false;
+        $firstLesson = null;
+
+        if (auth()->check()) {
+            $isEnrolled = Enrollment::where('user_id', auth()->id())
+                ->where('course_id', $course->id)
+                ->exists();
+        }
+
+        // find first lesson to link "Belajar sekarang"
+        $firstLesson = $course->modules->flatMap->lessons->first();
+
+        return view('pages.course-detail', compact('course', 'totalLessons', 'totalDuration', 'isEnrolled', 'firstLesson'));
     }
 }

@@ -15,10 +15,19 @@
             <p class="text-xl text-tertiary mb-10 leading-relaxed max-w-xl font-medium">
                 {{ $course->description }}
             </p>
+            @php
+                // Enrollment and first lesson are provided by the controller: $isEnrolled, $firstLesson
+            @endphp
             <div class="flex flex-wrap gap-6 items-center">
+                @if(!empty($isEnrolled) && $isEnrolled)
+                <a href="/course/{{ $course->id }}/learn/{{ $firstLesson?->id ?? '' }}" class="inline-block bg-primary text-white px-10 py-5 rounded-full font-black text-lg shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    Belajar sekarang
+                </a>
+                @else
                 <a href="/checkout/{{ $course->id }}" class="inline-block bg-primary text-white px-10 py-5 rounded-full font-black text-lg shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Enroll Now — Rp {{ number_format($course->price, 0, ',', '.') }}
                 </a>
+                @endif
                 <div class="flex items-center gap-4">
                     <div class="flex -space-x-3">
                         @foreach([1, 2, 3] as $i)
@@ -207,9 +216,15 @@
             <div class="hidden lg:block sticky top-28 p-10 border-2 border-primary/20 rounded-[2.5rem] bg-surface-container-lowest shadow-2xl shadow-primary/5">
                 <p class="text-xs font-black text-tertiary mb-2 uppercase tracking-widest">Lifetime Access</p>
                 <div class="text-4xl font-black text-on-surface mb-8 tracking-tighter">Rp {{ number_format($course->price, 0, ',', '.') }}</div>
+                @if(!empty($isEnrolled) && $isEnrolled)
+                <a href="/course/{{ $course->id }}/learn/{{ $firstLesson?->id ?? '' }}" class="block w-full text-center py-5 bg-primary text-white rounded-full font-black text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all mb-6">
+                    Belajar sekarang
+                </a>
+                @else
                 <a href="/checkout/{{ $course->id }}" class="block w-full text-center py-5 bg-primary text-white rounded-full font-black text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all mb-6">
                     Enroll Now
                 </a>
+                @endif
                 <p class="text-xs text-center text-tertiary font-bold uppercase tracking-widest">30-day money back guarantee</p>
             </div>
         </aside>
