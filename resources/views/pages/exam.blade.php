@@ -2,17 +2,18 @@
 
 @section('content')
 <div class="flex min-h-[calc(100vh-5rem)] bg-surface relative"
-     x-data="{
-        currentQ:     0,
-        answers:      {},
-        totalQ:       {{ $lesson->questions->count() }},
-        timeLeft:     0,
-        timerStr:     '--:--',
-        intervalId:   null,
-        deadlineKey:  'exam_deadline_{{ $attempt->id }}',
-        storageKey:   'exam_answers_{{ $attempt->id }}',
-        serverRemaining: {{ $remainingSeconds }},
-        init() {
+      x-data="{
+          currentQ:     0,
+          answers:      {},
+          totalQ:       {{ $lesson->questions->count() }},
+          timeLeft:     0,
+          timerStr:     '--:--',
+          intervalId:   null,
+          deadlineKey:  'exam_deadline_{{ $attempt->id }}',
+          storageKey:   'exam_answers_{{ $attempt->id }}',
+          serverRemaining: {{ $remainingSeconds }},
+          sidebarOpen:  true,
+          init() {
             // === LOAD JAWABAN ===
             const saved = localStorage.getItem(this.storageKey);
             if (saved) {
@@ -52,6 +53,7 @@
             tick(); // render langsung tanpa delay
             this.intervalId = setInterval(tick, 1000);
         },
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; },
         clearAndSubmit() {
             clearInterval(this.intervalId);
             localStorage.removeItem(this.storageKey);
@@ -64,17 +66,31 @@
         }
      }">
 
-    {{-- ===== MAIN CONTENT AREA ===== --}}
-    <div class="flex-1 xl:mr-80 transition-all duration-300">
-        <div class="px-6 lg:px-20 pt-12 pb-36 max-w-4xl mx-auto">
-
-            {{-- Breadcrumb --}}
-            <nav class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-tertiary mb-8">
+    {{-- ===== HEADER (with timer + nav toggle) ===== --}}
+    <header class="fixed top-0 left-0 right-0 h-20 z-50 bg-surface/90 backdrop-blur-xl border-b border-surface-container-high flex items-center px-6 lg:px-20">
+        <div class="flex-1">
+            <nav class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-tertiary">
                 <a href="/course/{{ $course->id }}/learn/{{ $lesson->id }}" class="hover:text-primary">{{ $lesson->title }}</a>
                 <i data-lucide="chevron-right" class="w-2.5 h-2.5"></i>
                 <span class="text-primary">Ujian</span>
             </nav>
+        </div>
 
+        <div class="flex items-center gap-4">
+            <button type="button" @click="toggleSidebar()" class="px-3 py-2 rounded-full border border-surface-container-high text-tertiary hover:bg-surface-container-high transition-all">
+                <i data-lucide="menu" class="w-4 h-4"></i>
+            </button>
+
+            <div class="flex items-center gap-2" :class="timeLeft < 60 ? 'text-red-500' : 'text-tertiary'">
+                <i data-lucide="timer" class="w-5 h-5"></i>
+                <span class="font-black text-xl tracking-tighter" x-text="timerStr">--:--</span>
+            </div>
+        </div>
+    </header>
+
+    {{-- ===== MAIN CONTENT AREA ===== --}}
+    <div class="flex-1 xl:ml-80 transition-all duration-300">
+        <div class="px-6 lg:px-20 pt-20 pb-36 max-w-4xl mx-auto">
             <form x-ref="examForm" method="POST" action="{{ route('course.exam.submit', [$course->id, $lesson->id]) }}">
                 @csrf
 
@@ -116,10 +132,16 @@
     </div>
 
     {{-- ===== SIDEBAR — Nomor Soal ===== --}}
-    <aside class="hidden xl:flex h-[calc(100vh-5rem)] w-80 fixed right-0 top-20 bg-surface-container-low border-l border-surface-container-high flex-col px-6 pt-8 pb-32 gap-y-6 overflow-y-auto">
+            <aside x-show="sidebarOpen" x-transition.duration.300ms
+                class="hidden xl:flex h-[calc(100vh-5rem)] w-80 fixed left-0 top-20 bg-surface-container-low border-r border-surface-container-high flex-col px-6 pt-8 pb-32 gap-y-6 overflow-y-auto">
 
         {{-- Info Kuis --}}
         <div>
+            <div class="flex justify-end mb-3">
+                <button type="button" @click="sidebarOpen = false" class="px-2 py-1 rounded-full border text-tertiary hover:bg-surface-container-high">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
             <div class="text-xs font-black uppercase tracking-widest text-tertiary mb-1">Ujian</div>
             <div class="font-black text-xl tracking-tight text-on-surface">{{ $lesson->title }}</div>
         </div>
@@ -161,14 +183,16 @@
         </div>
     </aside>
 
-    {{-- ===== BOTTOM FOOTER NAV ===== --}}
-    <footer class="fixed bottom-0 left-0 w-full h-24 z-50 bg-surface/90 backdrop-blur-xl border-t border-surface-container-high flex justify-between items-center px-8 lg:px-12 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] xl:pr-[336px]">
+    {{-- Floating open button when sidebar is closed (desktop) --}}
+    <button type="button" x-show="!sidebarOpen" @click="sidebarOpen = true"
+            class="hidden xl:flex fixed left-4 top-1/2 -translate-y-1/2 z-40 px-3 py-2 bg-primary text-white rounded-full shadow-lg">
+        <i data-lucide="chevrons-right" class="w-4 h-4"></i>
+    </button>
 
-        {{-- Countdown Timer --}}
-        <div class="flex items-center gap-2" :class="timeLeft < 60 ? 'text-red-500' : 'text-tertiary'">
-            <i data-lucide="timer" class="w-5 h-5"></i>
-            <span class="font-black text-xl tracking-tighter" x-text="timerStr">--:--</span>
-        </div>
+    {{-- ===== BOTTOM FOOTER NAV ===== --}}
+    <footer class="fixed bottom-0 left-0 w-full h-24 z-50 bg-surface/90 backdrop-blur-xl border-t border-surface-container-high flex justify-between items-center px-8 lg:px-12 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] xl:pl-[336px]">
+
+        <div></div>
 
         {{-- Prev / Next / Submit --}}
         <div class="flex items-center gap-3">

@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.course')
 
-@section('content')
+@section('course-content')
 <!-- We use AlpineJS to handle the sidebar toggle state -->
-<div class="flex min-h-[calc(100vh-5rem)] bg-surface relative" x-data="{ isSidebarOpen: true, activeSection: 'module-{{ $currentLesson->module_id }}' }">
+<div class="flex min-h-[calc(100vh-5rem)] bg-surface relative" x-data="{ isSidebarOpen: true, openSections: {{ Js::from($course->modules->pluck('id')->mapWithKeys(fn($id) => ['module-'.$id => ($currentLesson->module_id == $id)])) }} }">
     <!-- Main Content Area -->
     <div class="flex-1 transition-all duration-300" :class="isSidebarOpen ? 'xl:mr-96' : ''">
         <div class="px-6 lg:px-20 pt-12 pb-36 max-w-5xl mx-auto">
@@ -124,7 +124,7 @@
     </div>
 
     <!-- Sidebar - Course Content -->
-    <aside class="hidden xl:flex h-[calc(100vh-5rem)] w-96 fixed right-0 top-20 bg-surface-container-low border-l border-surface-container-high flex-col px-8 pt-8 pb-32 gap-y-8 overflow-y-auto transition-transform duration-300"
+    <aside class="hidden xl:flex h-[calc(100vh-5rem)] w-96 fixed right-0 top-20 bg-surface-container-low border-l border-surface-container-high flex-col px-8 pt-8 pb-30 gap-y-8 overflow-y-auto transition-transform duration-300"
            :class="isSidebarOpen ? 'translate-x-0' : 'translate-x-full'">
         <div class="space-y-4">
             <div class="flex justify-between items-center">
@@ -144,24 +144,24 @@
 
         <div class="space-y-4 flex-grow">
             @foreach($course->modules as $module)
-            <div class="{{ $currentLesson->module_id == $module->id ? 'bg-surface-container-lowest shadow-sm' : 'bg-surface-container-high/30 hover:border-surface-container-high' }} rounded-3xl p-6 border border-transparent transition-all">
-                <button 
-                    @click="activeSection = (activeSection === 'module-{{ $module->id }}' ? '' : 'module-{{ $module->id }}')"
-                    class="flex items-center justify-between w-full font-black tracking-tight {{ $currentLesson->module_id == $module->id ? 'text-primary' : 'text-on-surface opacity-60' }}"
-                >
-                    <span class="flex items-center gap-3">
+            <div class="rounded-3xl p-6 border border-transparent transition-all bg-surface-container-lowest shadow-sm ">
+                <button @click="openSections['module-{{ $module->id }}'] = !openSections['module-{{ $module->id }}']"
+                        class="flex items-center justify-between w-full font-black tracking-tight text-primary">
+                    <span class="flex items-center gap-3 text-left">
                         <i data-lucide="network" class="w-[18px] h-[18px]"></i>
                         {{ $module->title }}
                     </span>
-                    <i data-lucide="chevron-up" x-show="activeSection === 'module-{{ $module->id }}'" class="w-5 h-5"></i>
-                    <i data-lucide="chevron-down" x-show="activeSection !== 'module-{{ $module->id }}'" style="display:none;" class="w-5 h-5"></i>
+                    <span>
+                        <i data-lucide="chevron-up" x-show="openSections['module-{{ $module->id }}']" class="w-5 h-5"></i>
+                        <i data-lucide="chevron-down" x-show="!openSections['module-{{ $module->id }}']" class="w-5 h-5" style="display:none;"></i>
+                    </span>
                 </button>
-                <div x-show="activeSection === 'module-{{ $module->id }}'" class="mt-6 space-y-4" style="{{ $currentLesson->module_id == $module->id ? '' : 'display:none;' }}">
+                <div x-show="openSections['module-{{ $module->id }}']" class="mt-6 space-y-4">
                     @foreach($module->lessons as $lessonItem)
                     @php
                         $isCompleted = in_array($lessonItem->id, $completedLessonIds);
                     @endphp
-                    <a href="/course/{{ $course->id }}/learn/{{ $lessonItem->id }}" class="flex items-center gap-3 text-sm transition-colors group {{ $currentLesson->id == $lessonItem->id ? 'font-black text-primary' : 'font-bold text-tertiary hover:text-on-surface' }}">
+                    <a href="/course/{{ $course->id }}/learn/{{ $lessonItem->id }}" class="flex items-center gap-3 text-sm text-left transition-colors group {{ $currentLesson->id == $lessonItem->id ? 'font-black text-primary' : 'font-bold text-on-surface hover:text-primary' }}">
                         @if($isCompleted)
                         <i data-lucide="check-circle" class="text-green-500 w-5 h-5 flex-shrink-0"></i>
                         @elseif($currentLesson->id == $lessonItem->id)
@@ -169,7 +169,7 @@
                             <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
                         </div>
                         @else
-                        <div class="w-4 h-4 rounded-full border-2 border-surface-container-high flex-shrink-0 ml-0.5"></div>
+                        <div class="w-4 h-4 rounded-full border-2 border-on-surface flex-shrink-0 ml-0.5"></div>
                         @endif
                         <span>{{ $lessonItem->title }}</span>
                     </a>
@@ -186,15 +186,9 @@
     </aside>
 
     <!-- Bottom Navigation Bar -->
-    <footer class="fixed bottom-0 left-0 w-full h-24 z-50 bg-surface/90 backdrop-blur-xl border-t border-surface-container-high flex justify-between items-center px-8 lg:px-12 py-4 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]"
+    <footer class="fixed bottom-0 left-0 w-full h-20 z-50 bg-surface/90 backdrop-blur-xl border-t border-surface-container-high flex justify-between items-center px-8 lg:px-12 py-4 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]"
             :class="isSidebarOpen ? 'xl:pr-[416px]' : ''">
-        <a 
-            href="/dashboard"
-            class="flex items-center gap-2 px-6 py-3 rounded-full border border-surface-container-high text-tertiary font-black uppercase tracking-widest text-xs hover:bg-surface-container-low transition-all active:scale-95"
-        >
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Back
-        </a>
+        <div></div>
         
         <!-- Toggle Sidebar (Mobile/Tablet) -->
         <button @click="isSidebarOpen = !isSidebarOpen" class="hidden xl:flex items-center gap-2 px-4 py-2 border rounded-full text-tertiary uppercase text-xs font-black" x-show="!isSidebarOpen">
